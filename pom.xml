@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.lmartino.bank</groupId>
+    <artifactId>money-transfer</artifactId>
+    <packaging>pom</packaging>
+    <version>${project.version}</version>
+    <modules>
+        <module>money-transfer-domain</module>
+        <module>money-transfer-repository</module>
+        <module>money-transfer-rest-api</module>
+        <module>money-transfer-app</module>
+        <module>money-transfer-acceptance-test</module>
+    </modules>
+
+    <properties>
+        <!-- Maven Project Version -->
+        <project.version>1.0.0-SNAPSHOT</project.version>
+
+        <!-- Maven Properties -->
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+
+        <!-- Web Properties-->
+        <sparkjava-core.version>2.9.1</sparkjava-core.version>
+        <google-gson.version>2.8.0</google-gson.version>
+
+        <!-- Dependency Injection -->
+        <google-guice.version>4.1.0</google-guice.version>
+
+        <!-- Logging and Lombok -->
+        <slfj.version>1.7.21</slfj.version>
+        <lombok.version>1.18.4</lombok.version>
+
+        <!-- repository dependencies -->
+        <h2.version>1.4.199</h2.version>
+        <ormlite-jdbc.version>5.0</ormlite-jdbc.version>
+
+        <!-- Test dependencies -->
+        <junit.version>4.12</junit.version>
+        <easymock.version>3.5.1</easymock.version>
+        <cucumber.version>1.2.4</cucumber.version>
+
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.sparkjava</groupId>
+                <artifactId>spark-core</artifactId>
+                <version>${sparkjava-core.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.code.gson</groupId>
+                <artifactId>gson</artifactId>
+                <version>${google-gson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.inject</groupId>
+                <artifactId>guice</artifactId>
+                <version>${google-guice.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-simple</artifactId>
+                <version>${slfj.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.h2database</groupId>
+                <artifactId>h2</artifactId>
+                <version>${h2.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.j256.ormlite</groupId>
+                <artifactId>ormlite-jdbc</artifactId>
+                <version>${ormlite-jdbc.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.easymock</groupId>
+                <artifactId>easymock</artifactId>
+                <version>${easymock.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>info.cukes</groupId>
+                <artifactId>cucumber-java</artifactId>
+                <version>${cucumber.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>info.cukes</groupId>
+                <artifactId>cucumber-junit</artifactId>
+                <version>${cucumber.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+    
+</project>
