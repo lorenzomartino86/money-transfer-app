@@ -14,4 +14,9 @@ jobs:
           name: Build Project and Run Tests
           command: mvn clean install
 
+      - run:
+          name: Coverage Metrics
+          command: bash <(curl -s https://codecov.io/bash)
+
+
 command: docker stop $(docker ps -a -q)
