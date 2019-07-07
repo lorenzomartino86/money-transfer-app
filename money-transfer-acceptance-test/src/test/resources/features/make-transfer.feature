@@ -1,4 +1,4 @@
-Feature: Users  can make transfer from one account into another
+Feature: Users can make transfer from one account into another
 
   Scenario Outline: User can make a money transfer between accounts
     Given account <sourceAccount> with balance <sourceBalance>
@@ -7,6 +7,7 @@ Feature: Users  can make transfer from one account into another
     Then transfer is completed
     And source account has balance <sourceBalance> reduced by <transfer>
     And target account has balance <targetBalance> increased by <transfer>
+
   Examples:
   | sourceAccount | sourceBalance | targetAccount | targetBalance | transfer | description |
   | Foo           | 123.99        | bar           | 22.01         | 51.99    | Transfer 1  |

@@ -62,7 +62,7 @@ public class TransferBetweenTwoAccountsSteps {
 
     }
 
-    @When("^user makes transfer of (.*) between with note (.*)$")
+    @When("^user makes transfer of (.*) with note (.*)$")
     public void user_makes_transfer_between_accounts_with_note(BigDecimal amount, String description) throws Throwable {
         MakeTransferDto makeTransferDto = new MakeTransferDto(fromAccount.getId(), toAccount.getId(), amount, description);
         final String payload = new Gson().toJson(makeTransferDto);
@@ -87,18 +87,18 @@ public class TransferBetweenTwoAccountsSteps {
         AccountDto updatedSourceAccount = given()
                 .get("/api/accounts/" + fromAccount.getId())
                 .then()
-                .statusCode(201)
+                .statusCode(200)
                 .extract()
                 .as(AccountDto.class);
         assertThat(updatedSourceAccount.getBalance().doubleValue(), is(originalBalance.subtract(reduction).doubleValue()));
     }
 
-    @Then("^target account has balance (.*+) increased by (.*)$")
+    @Then("^target account has balance (.*) increased by (.*)$")
     public void target_account_has_balance_increased(BigDecimal originalBalance, BigDecimal increase) throws Throwable {
         AccountDto updatedTargetAccount = given()
                 .get("/api/accounts/" + toAccount.getId())
                 .then()
-                .statusCode(201)
+                .statusCode(200)
                 .extract()
                 .as(AccountDto.class);
         assertThat(updatedTargetAccount.getBalance().doubleValue(), is(originalBalance.add(increase).doubleValue()));

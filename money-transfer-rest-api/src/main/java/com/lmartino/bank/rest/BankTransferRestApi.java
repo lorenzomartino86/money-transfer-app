@@ -25,6 +25,7 @@ public class BankTransferRestApi {
                     Amount.of(transferDto.getAmount()),
                     transferDto.getDescription());
             TransferDto createdTransferDto = toDto(transfer);
+            response.status(201);
             return new Gson().toJson(createdTransferDto);
         });
 
