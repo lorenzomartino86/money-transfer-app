@@ -3,6 +3,7 @@ package com.lmartino.bank.rest.dto;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -13,14 +14,14 @@ public class TransferDto {
     private String fromAccountId;
     private String toAccountId;
     private String description;
-    private Double amount;
+    private BigDecimal amount;
     private String createdAt;
 
     private TransferDto(final String id,
                         final String fromAccountId,
                         final String toAccountId,
                         final String description,
-                        final Double amount,
+                        final BigDecimal amount,
                         final String createdAt){
         this.id = id;
         this.fromAccountId = fromAccountId;
@@ -34,7 +35,7 @@ public class TransferDto {
                                  final String fromAccountId,
                                  final String toAccountId,
                                  final String description,
-                                 final Double amount,
+                                 final BigDecimal amount,
                                  final LocalDateTime createdAt){
         return new TransferDto(id, fromAccountId, toAccountId, description, amount, createdAt.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
     }

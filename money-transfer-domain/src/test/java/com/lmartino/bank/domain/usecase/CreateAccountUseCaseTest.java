@@ -7,6 +7,8 @@ import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.math.BigDecimal;
+
 import static org.easymock.EasyMock.*;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -19,7 +21,7 @@ public class CreateAccountUseCaseTest {
     @Test
     public void canCreateNewAccount(){
         final String name = "Foo";
-        final double balance = 1542.35;
+        final BigDecimal balance = BigDecimal.valueOf(1542.35);
 
         Account newAccount = Account.createNewAccount(name, Amount.of(balance));
         expect(mockAccountRepository.saveAccount(EasyMock.anyObject(Account.class)))

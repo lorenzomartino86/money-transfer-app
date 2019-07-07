@@ -4,6 +4,9 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 /**
  * Value Object for money amount representation
  * By default just EUR currency
@@ -12,25 +15,25 @@ import lombok.ToString;
 @ToString
 @EqualsAndHashCode
 public class Amount {
-    private double money;
+    private BigDecimal money;
 
-    private Amount(final double money){
+    private Amount(final BigDecimal money){
         this.money = money;
     }
 
-    public static Amount of(final double money){
-        return new Amount(money);
+    public static Amount of(final BigDecimal money){
+        return new Amount(money.setScale(2, RoundingMode.CEILING));
     }
 
     public boolean isGreaterThan(Amount other) {
-        return this.money > other.getMoney();
+        return this.money.doubleValue() > other.getMoney().doubleValue();
     }
 
     public void decreaseBy(Amount amount) {
-        this.money -= amount.getMoney();
+        money = money.subtract(amount.getMoney());
     }
 
     public void increaseBy(Amount amount) {
-        this.money += amount.getMoney();
+        money = money.add(amount.getMoney());
     }
 }

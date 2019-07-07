@@ -9,6 +9,7 @@ import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 
 import static org.easymock.EasyMock.*;
@@ -23,12 +24,12 @@ public class MakeTransferUseCaseTest {
 
     @Test
     public void canMakeTransferFromFooAccountIntoBarAccount(){
-        Amount transferAmount = Amount.of(123.12);
+        Amount transferAmount = Amount.of(BigDecimal.valueOf(123.12));
         String transferDescription = "Transfer Description";
 
         // Account mock and stubs
-        Account fooAccount = Account.createNewAccount("Foo", Amount.of(1542.35));
-        Account barAccount = Account.createNewAccount("Bar", Amount.of(765.91));
+        Account fooAccount = Account.createNewAccount("Foo", Amount.of(BigDecimal.valueOf(1542.35)));
+        Account barAccount = Account.createNewAccount("Bar", Amount.of(BigDecimal.valueOf(765.91)));
         expect(mockAccountRepository.getAccountBy(EasyMock.anyString())).andReturn(Optional.of(barAccount)).times(1);
         expect(mockAccountRepository.getAccountBy(EasyMock.anyString())).andReturn(Optional.of(fooAccount)).times(1);
         replay(mockAccountRepository);

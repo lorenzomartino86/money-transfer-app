@@ -5,6 +5,7 @@ import com.j256.ormlite.table.DatabaseTable;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Getter
@@ -24,7 +25,7 @@ public class TransferTable {
     private String description;
 
     @DatabaseField(canBeNull = false)
-    private Double amount;
+    private BigDecimal amount;
 
     @DatabaseField(canBeNull = false)
     private Date createdAt;

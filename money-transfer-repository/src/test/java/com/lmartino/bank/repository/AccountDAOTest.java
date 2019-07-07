@@ -9,6 +9,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.Optional;
 
@@ -27,7 +28,7 @@ public class AccountDAOTest {
 
     @Test
     public void canCreateNewAccount(){
-        Account requestedAccount = Account.createNewAccount("Test Account", Amount.of(1000.99));
+        Account requestedAccount = Account.createNewAccount("Test Account", Amount.of(BigDecimal.valueOf(1000.99)));
         Account createdAccount = accountDAO.saveAccount(requestedAccount);
         Assert.assertThat(createdAccount, is(notNullValue()));
         Assert.assertThat(createdAccount, is(requestedAccount));
@@ -35,7 +36,7 @@ public class AccountDAOTest {
 
     @Test
     public void canGetAccountById(){
-        Account requestedAccount = Account.createNewAccount("Test Account", Amount.of(1000.99));
+        Account requestedAccount = Account.createNewAccount("Test Account", Amount.of(BigDecimal.valueOf(1000.99)));
         accountDAO.saveAccount(requestedAccount);
         Optional<Account> account = accountDAO.getAccountBy(requestedAccount.getId().getValue());
         Assert.assertThat(account.isEmpty(), is(false));

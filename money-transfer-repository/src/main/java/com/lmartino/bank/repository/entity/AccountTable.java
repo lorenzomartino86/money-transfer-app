@@ -5,6 +5,7 @@ import com.j256.ormlite.table.DatabaseTable;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Getter
@@ -18,7 +19,7 @@ public class AccountTable {
     private String name;
 
     @DatabaseField(canBeNull = false)
-    private Double balance;
+    private BigDecimal balance;
 
     @DatabaseField(canBeNull = false)
     private Date createdBy;

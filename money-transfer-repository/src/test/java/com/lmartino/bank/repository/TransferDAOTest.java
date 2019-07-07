@@ -12,6 +12,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.Optional;
 
@@ -34,9 +35,9 @@ public class TransferDAOTest {
 
     @Test
     public void accountsBalanceIsUpdatedWhenMakeTransferTransactionIsCommitted(){
-        double initialFooBalance = 1250;
-        double initialBarBalance = 321.99;
-        double transferAmount = 450.50;
+        BigDecimal initialFooBalance = BigDecimal.valueOf(1250);
+        BigDecimal initialBarBalance = BigDecimal.valueOf(321.99);
+        BigDecimal transferAmount = BigDecimal.valueOf(450.50);
         Account foo = accountDAO.saveAccount(Account.createNewAccount("Foo", Amount.of(initialFooBalance)));
         Account bar = accountDAO.saveAccount(Account.createNewAccount("Bar", Amount.of(initialBarBalance)));
 
@@ -46,19 +47,19 @@ public class TransferDAOTest {
         Assert.assertThat(createdTransfer, is(requestedTransfer));
 
         Optional<Account> updatedFoo = accountDAO.getAccountBy(foo.getId().getValue());
-        Assert.assertThat(updatedFoo.get().getBalance(), is(Amount.of(initialFooBalance - transferAmount)));
+        Assert.assertThat(updatedFoo.get().getBalance(), is(Amount.of(initialFooBalance.subtract(transferAmount))));
 
         Optional<Account> updatedBar = accountDAO.getAccountBy(bar.getId().getValue());
-        Assert.assertThat(updatedBar.get().getBalance(), is(Amount.of(initialBarBalance + transferAmount)));
+        Assert.assertThat(updatedBar.get().getBalance(), is(Amount.of(initialBarBalance.add(transferAmount))));
 
     }
 
 
     @Test
     public void accountBalanceIsRestoredIfMakeTransferTransactionFails() throws SQLException {
-        double initialFooBalance = 1250;
-        double initialBarBalance = 321.99;
-        double transferAmount = 450.50;
+        BigDecimal initialFooBalance = BigDecimal.valueOf(1250);
+        BigDecimal initialBarBalance = BigDecimal.valueOf(321.99);
+        BigDecimal transferAmount = BigDecimal.valueOf(450.50);
         Account foo = accountDAO.saveAccount(Account.createNewAccount("Foo", Amount.of(initialFooBalance)));
         Account bar = accountDAO.saveAccount(Account.createNewAccount("Bar", Amount.of(initialBarBalance)));
 
