@@ -10,6 +10,7 @@ Feature: Users can create new bank accounts
     And account name is <name>
 
   Examples:
-  | name | balance |
-  | Foo  | 123.99  |
+  | name | balance  |
+  | Foo  | 123.99   |
+  | Bar  | 5000.98  |
 

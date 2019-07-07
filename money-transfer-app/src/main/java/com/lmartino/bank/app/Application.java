@@ -12,6 +12,7 @@ import com.lmartino.bank.repository.entity.AccountTable;
 import com.lmartino.bank.repository.entity.TransferTable;
 import com.lmartino.bank.rest.AccountRestApi;
 import com.lmartino.bank.rest.BankTransferRestApi;
+import spark.Spark;
 
 import java.sql.SQLException;
 
@@ -20,6 +21,10 @@ import static spark.Spark.*;
 public class Application {
 
     public static void main(String[] args) throws SQLException {
+        start();
+    }
+
+    public static void start() throws SQLException {
         // Configure Spark
         port(8080);
         int maxThreads = 8;
@@ -45,7 +50,11 @@ public class Application {
 
         AccountRestApi.init(createAccountUseCase, getAccountUseCase);
         BankTransferRestApi.init(makeTransferUseCase);
+    }
 
+    public static void stop(){
+        Spark.stop();
+        awaitStop();
     }
 
 }

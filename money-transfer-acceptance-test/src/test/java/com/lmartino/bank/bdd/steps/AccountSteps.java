@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.lmartino.bank.app.Application;
 import com.lmartino.bank.rest.dto.AccountDto;
 import com.lmartino.bank.rest.dto.CreateAccountDto;
+import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -13,6 +14,7 @@ import io.restassured.mapper.ObjectMapper;
 import io.restassured.response.Response;
 import io.restassured.response.ResponseBody;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
@@ -29,7 +31,13 @@ public class AccountSteps {
 
     @Before
     public void setUp() throws SQLException {
-        Application.main(null);
+        // Starting main jvm process
+        Application.start();
+    }
+
+    @After
+    public void tearDown() {
+        Application.stop();
     }
 
     @Given("^Account name (.*)$")
