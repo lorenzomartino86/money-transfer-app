@@ -12,6 +12,7 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import io.restassured.http.ContentType;
+import io.restassured.response.Response;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
@@ -25,6 +26,7 @@ public class TransferBetweenTwoAccountsSteps {
     private AccountDto fromAccount;
     private AccountDto toAccount;
     private TransferDto responseBody;
+    private Response response;
 
     @Before
     public void setUp() throws SQLException {
@@ -66,20 +68,27 @@ public class TransferBetweenTwoAccountsSteps {
     public void user_makes_transfer_between_accounts_with_note(BigDecimal amount, String description) throws Throwable {
         MakeTransferDto makeTransferDto = new MakeTransferDto(fromAccount.getId(), toAccount.getId(), amount, description);
         final String payload = new Gson().toJson(makeTransferDto);
-        responseBody = given()
+        response = given()
                 .contentType(ContentType.JSON)
                 .body(payload)
-                .post("/api/transfers")
-                .then()
-                .statusCode(201)
-                .extract()
-                .as(TransferDto.class);
+                .post("/api/transfers");
     }
 
     @Then("^transfer is completed$")
     public void transfer_is_completed() throws Throwable {
+        responseBody = response
+                .then()
+                .statusCode(201)
+                .extract()
+                .as(TransferDto.class);
         assertThat(responseBody, is(notNullValue()));
         assertThat(responseBody.getId(), is(notNullValue()));
+    }
+
+    @Then("^transfer is rejected$")
+    public void transfer_is_rejected() throws Throwable {
+        response.then()
+                .statusCode(422);
     }
 
     @Then("^source account has balance (.*) reduced by (.*)$")
@@ -103,6 +112,5 @@ public class TransferBetweenTwoAccountsSteps {
                 .as(AccountDto.class);
         assertThat(updatedTargetAccount.getBalance().doubleValue(), is(originalBalance.add(increase).doubleValue()));
     }
-
 
 }
