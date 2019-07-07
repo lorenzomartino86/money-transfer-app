@@ -25,6 +25,7 @@ public class Application {
     }
 
     public static void start() throws SQLException {
+        stop();
         // Configure Spark
         port(8080);
         int maxThreads = 8;
