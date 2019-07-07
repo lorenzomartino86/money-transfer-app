@@ -13,8 +13,8 @@ public class CreateAccountUseCase {
         this.accountRepository = accountRepository;
     }
 
-    public Account compose(final String name, final BigDecimal balance) {
-        Account account = Account.createNewAccount(name, Amount.of(balance));
+    public Account compose(final String name, final BigDecimal balance, final String currency) {
+        Account account = Account.createNewAccount(name, Amount.of(balance), null);
         return accountRepository.saveAccount(account);
     }
 }

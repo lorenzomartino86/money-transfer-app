@@ -87,7 +87,8 @@ public class AccountDAO extends BaseDaoImpl<AccountTable, String> implements Acc
         return Account.of(Id.of(accountTable.getId()),
                 accountTable.getName(),
                 Amount.of(accountTable.getBalance()),
-                toLocalDateTime(accountTable.getCreatedBy())
+                toLocalDateTime(accountTable.getCreatedBy()),
+                null
         );
     }
 

@@ -28,8 +28,8 @@ public class MakeTransferUseCaseTest {
         String transferDescription = "Transfer Description";
 
         // Account mock and stubs
-        Account fooAccount = Account.createNewAccount("Foo", Amount.of(BigDecimal.valueOf(1542.35)));
-        Account barAccount = Account.createNewAccount("Bar", Amount.of(BigDecimal.valueOf(765.91)));
+        Account fooAccount = Account.createNewAccount("Foo", Amount.of(BigDecimal.valueOf(1542.35)), null);
+        Account barAccount = Account.createNewAccount("Bar", Amount.of(BigDecimal.valueOf(765.91)), null);
         expect(mockAccountRepository.getAccountBy(EasyMock.anyString())).andReturn(Optional.of(barAccount)).times(1);
         expect(mockAccountRepository.getAccountBy(EasyMock.anyString())).andReturn(Optional.of(fooAccount)).times(1);
         replay(mockAccountRepository);

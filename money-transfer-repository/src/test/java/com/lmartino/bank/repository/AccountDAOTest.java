@@ -28,7 +28,7 @@ public class AccountDAOTest {
 
     @Test
     public void canCreateNewAccount(){
-        Account requestedAccount = Account.createNewAccount("Test Account", Amount.of(BigDecimal.valueOf(1000.99)));
+        Account requestedAccount = Account.createNewAccount("Test Account", Amount.of(BigDecimal.valueOf(1000.99)), null);
         Account createdAccount = accountDAO.saveAccount(requestedAccount);
         Assert.assertThat(createdAccount, is(notNullValue()));
         Assert.assertThat(createdAccount, is(requestedAccount));
@@ -36,7 +36,7 @@ public class AccountDAOTest {
 
     @Test
     public void canGetAccountById(){
-        Account requestedAccount = Account.createNewAccount("Test Account", Amount.of(BigDecimal.valueOf(1000.99)));
+        Account requestedAccount = Account.createNewAccount("Test Account", Amount.of(BigDecimal.valueOf(1000.99)), null);
         accountDAO.saveAccount(requestedAccount);
         Optional<Account> account = accountDAO.getAccountBy(requestedAccount.getId().getValue());
         Assert.assertThat(account.isEmpty(), is(false));

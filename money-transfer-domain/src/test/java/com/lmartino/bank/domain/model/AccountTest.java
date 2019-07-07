@@ -15,7 +15,7 @@ public class AccountTest {
     public void canCreateNewAccount(){
         String name = "Account Name";
         Amount balance = Amount.of(BigDecimal.valueOf(1500.0));
-        Account account = Account.createNewAccount(name, balance);
+        Account account = Account.createNewAccount(name, balance, null);
         Assert.assertThat(account, is(notNullValue()));
         Assert.assertThat(account.getName(), is(name));
         Assert.assertThat(account.getBalance(), is(balance));
@@ -25,7 +25,7 @@ public class AccountTest {
     @Test
     public void givenOverallHealthyBalance_canWithdrawAmountFromAccount(){
         BigDecimal initialBalance = BigDecimal.valueOf(1500.0);
-        Account account = Account.createNewAccount("Account Name", Amount.of(initialBalance));
+        Account account = Account.createNewAccount("Account Name", Amount.of(initialBalance), null);
         BigDecimal withdrawAmount = BigDecimal.valueOf(123.98);
         account.withdraw(Amount.of(withdrawAmount));
         Assert.assertThat(account, is(notNullValue()));
@@ -36,7 +36,7 @@ public class AccountTest {
     @Test(expected = InsufficientBalanceException.class)
     public void givenUnhealthyBalance_cannotWithdrawAmountFromAccount(){
         BigDecimal initialBalance = BigDecimal.valueOf(120.1);
-        Account account = Account.createNewAccount("Account Name", Amount.of(initialBalance));
+        Account account = Account.createNewAccount("Account Name", Amount.of(initialBalance), null);
         BigDecimal withdrawAmount = BigDecimal.valueOf(123.98);
         account.withdraw(Amount.of(withdrawAmount));
     }
@@ -45,7 +45,7 @@ public class AccountTest {
     @Test
     public void canDepositAmountIntoAccount(){
         BigDecimal initialBalance = BigDecimal.valueOf(1500.0);
-        Account account = Account.createNewAccount("Account Name", Amount.of(initialBalance));
+        Account account = Account.createNewAccount("Account Name", Amount.of(initialBalance), null);
         BigDecimal depositAmount = BigDecimal.valueOf(123.98);
         account.deposit(Amount.of(depositAmount));
         Assert.assertThat(account, is(notNullValue()));

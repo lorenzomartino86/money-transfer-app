@@ -15,9 +15,9 @@ public class TransferTest {
     public void givenFooAccountAndBarAccount_whenMakeTransferFromFooToBar_thenAmountIsIncreasedInBarAndDecreasedInFoo(){
         // Given foo and bar accounts
         BigDecimal initialFooBalance = BigDecimal.valueOf(2500.00);
-        Account foo = Account.createNewAccount("Foo", Amount.of(initialFooBalance));
+        Account foo = Account.createNewAccount("Foo", Amount.of(initialFooBalance), null);
         BigDecimal initialBarBalance = BigDecimal.valueOf(1345.98);
-        Account bar = Account.createNewAccount("Foo", Amount.of(initialBarBalance));
+        Account bar = Account.createNewAccount("Foo", Amount.of(initialBarBalance), null);
 
         // When Make transfer from foo to bar of 35.99 euros
         BigDecimal transferAmount = BigDecimal.valueOf(35.99);
@@ -34,9 +34,9 @@ public class TransferTest {
     public void givenFooAccountAndBarAccount_whenMakeTransferFromFooToBarAndFooHasNotSufficientBalance_thenTransferIsRejected(){
         // Given foo and bar accounts
         BigDecimal initialFooBalance = BigDecimal.valueOf(2500);
-        Account foo = Account.createNewAccount("Foo", Amount.of(initialFooBalance));
+        Account foo = Account.createNewAccount("Foo", Amount.of(initialFooBalance), null);
         BigDecimal initialBarBalance = BigDecimal.valueOf(1345.98);
-        Account bar = Account.createNewAccount("Foo", Amount.of(initialBarBalance));
+        Account bar = Account.createNewAccount("Foo", Amount.of(initialBarBalance), null);
 
         // When Make transfer from foo to bar of 35.99 euros
         BigDecimal transferAmount = BigDecimal.valueOf(3000);

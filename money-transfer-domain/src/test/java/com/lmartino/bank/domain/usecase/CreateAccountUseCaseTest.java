@@ -23,13 +23,13 @@ public class CreateAccountUseCaseTest {
         final String name = "Foo";
         final BigDecimal balance = BigDecimal.valueOf(1542.35);
 
-        Account newAccount = Account.createNewAccount(name, Amount.of(balance));
+        Account newAccount = Account.createNewAccount(name, Amount.of(balance), null);
         expect(mockAccountRepository.saveAccount(EasyMock.anyObject(Account.class)))
                 .andReturn(newAccount)
                 .times(1);
         replay(mockAccountRepository);
 
-        Account account = createAccountUseCase.compose(name, balance);
+        Account account = createAccountUseCase.compose(name, balance, null);
 
         Assert.assertThat(account, is(notNullValue()));
         Assert.assertThat(account, is(newAccount));

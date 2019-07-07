@@ -22,21 +22,23 @@ public class Account {
     private String name;
     private Amount balance;
     private LocalDateTime createdAt;
+    private Currency currency;
 
-    private Account(final Id id, final String name, final Amount balance, final LocalDateTime createdAt) {
+    private Account(final Id id, final String name, final Amount balance, final LocalDateTime createdAt, final Currency currency) {
         this.id = id;
         this.name = name;
         this.balance = balance;
         this.createdAt = createdAt;
+        this.currency = currency;
     }
 
-    public static Account of(final Id id, final String name, final Amount balance, final LocalDateTime createdAt) {
-        return new Account(id, name, balance, createdAt);
+    public static Account of(final Id id, final String name, final Amount balance, final LocalDateTime createdAt, final Currency currency) {
+        return new Account(id, name, balance, createdAt, currency);
     }
 
-    public static Account createNewAccount(final String name, final Amount balance) {
+    public static Account createNewAccount(final String name, final Amount balance, final Currency currency) {
         LocalDateTime now = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
-        Account account = new Account(Id.create(), name, balance, now);
+        Account account = new Account(Id.create(), name, balance, now, currency);
         log.info(String.format("Created new account %s", account));
         return account;
     }
