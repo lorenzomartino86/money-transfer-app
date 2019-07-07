@@ -40,7 +40,7 @@ public class TransferBetweenTwoAccountsSteps {
 
     @Given("^account (.*) with balance (.*)$")
     public void account_with_balance(String accountName, BigDecimal balance) throws Throwable {
-        CreateAccountDto createAccountDto = new CreateAccountDto(accountName, balance);
+        CreateAccountDto createAccountDto = new CreateAccountDto(accountName, balance, "EUR");
         final String payload = new Gson().toJson(createAccountDto);
         if (fromAccount == null){
             fromAccount = given()

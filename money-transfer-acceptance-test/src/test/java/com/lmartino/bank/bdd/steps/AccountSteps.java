@@ -27,6 +27,7 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 public class AccountSteps {
     private String accountName;
     private BigDecimal balance;
+    private String currency;
     private AccountDto responseBody;
 
     @Before
@@ -40,20 +41,25 @@ public class AccountSteps {
         Application.stop();
     }
 
-    @Given("^Account name (.*)$")
+    @Given("^name (.*)$")
     public void accountName(String accountName) {
         this.accountName = accountName;
     }
 
-    @Given("^Money balance (.*)$")
+    @Given("^money balance (.*)$")
     public void balance(BigDecimal balance) {
         this.balance = balance;
     }
 
+    @Given("^currency is (.*)$")
+    public void currency(String currency) {
+        this.currency = currency;
+    }
+
     @When("^user create new account$")
     public void user_create_new_account() throws Throwable {
-        if (accountName==null||balance==null) throw new IllegalArgumentException("Missing required input data");
-        CreateAccountDto createAccountDto = new CreateAccountDto(accountName, balance);
+        if (accountName==null||balance==null||currency==null) throw new IllegalArgumentException("Missing required input data");
+        CreateAccountDto createAccountDto = new CreateAccountDto(accountName, balance, currency);
         final String payload = new Gson().toJson(createAccountDto);
         responseBody = given()
                 .contentType(ContentType.JSON)
@@ -83,6 +89,11 @@ public class AccountSteps {
     @Then("^account name is (.*)$")
     public void account_name_is(String accountName) throws Throwable {
         Assert.assertThat(responseBody.getName(), is(accountName));
+    }
+
+    @Then("^account currency is (.*)$")
+    public void account_currency_is(String currency) throws Throwable {
+        Assert.assertThat(responseBody.getCurrency(), is(currency));
     }
 
 }

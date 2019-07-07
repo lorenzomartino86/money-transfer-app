@@ -18,4 +18,8 @@ public final class DomainExceptionHandler {
         throw new UnprocessableTransferException(String.format("Error during transfer transaction with details %s", transfer));
     }
 
+    public static void unknownCurrencyCodeException(final String currencyCode){
+        throw new UnknownCurrencyCodeException(String.format("Unknwown currency code %s", currencyCode));
+    }
+
 }

@@ -6,6 +6,7 @@ import com.j256.ormlite.support.ConnectionSource;
 import com.lmartino.bank.domain.adapter.AccountRepository;
 import com.lmartino.bank.domain.model.Account;
 import com.lmartino.bank.domain.model.Amount;
+import com.lmartino.bank.domain.model.Currency;
 import com.lmartino.bank.domain.model.Id;
 import com.lmartino.bank.repository.entity.AccountTable;
 import lombok.extern.java.Log;
@@ -80,6 +81,7 @@ public class AccountDAO extends BaseDaoImpl<AccountTable, String> implements Acc
         accountTable.setName(account.getName());
         accountTable.setBalance(account.getBalance().getMoney());
         accountTable.setCreatedBy(toDate(account.getCreatedAt()));
+        accountTable.setCurrency(account.getCurrency().getValue());
         return accountTable;
     }
 
@@ -88,7 +90,7 @@ public class AccountDAO extends BaseDaoImpl<AccountTable, String> implements Acc
                 accountTable.getName(),
                 Amount.of(accountTable.getBalance()),
                 toLocalDateTime(accountTable.getCreatedBy()),
-                null
+                Currency.of(accountTable.getCurrency())
         );
     }
 

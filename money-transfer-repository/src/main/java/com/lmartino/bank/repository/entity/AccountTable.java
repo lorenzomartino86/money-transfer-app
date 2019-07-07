@@ -19,6 +19,9 @@ public class AccountTable {
     private String name;
 
     @DatabaseField(canBeNull = false)
+    private String currency;
+
+    @DatabaseField(canBeNull = false)
     private BigDecimal balance;
 
     @DatabaseField(canBeNull = false)

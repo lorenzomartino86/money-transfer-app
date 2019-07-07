@@ -22,7 +22,7 @@ public class AccountRestApi {
         post("/api/accounts", (request, response) -> {
             response.type("application/json");
             CreateAccountDto account = new Gson().fromJson(request.body(), CreateAccountDto.class);
-            Account createdAccount = createAccountUseCase.compose(account.getName(), account.getBalance(), null);
+            Account createdAccount = createAccountUseCase.compose(account.getName(), account.getBalance(), account.getCurrency());
             AccountDto createdAccountDto = toDto(createdAccount);
             response.status(201);
             return new Gson().toJson(createdAccountDto);
@@ -54,7 +54,8 @@ public class AccountRestApi {
                 account.getId().getValue(),
                 account.getName(),
                 account.getBalance().getMoney(),
-                account.getCreatedAt()
+                account.getCreatedAt(),
+                account.getCurrency().getValue()
         );
     }
 

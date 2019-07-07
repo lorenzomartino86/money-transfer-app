@@ -5,6 +5,7 @@ import com.j256.ormlite.table.TableUtils;
 import com.lmartino.bank.domain.exception.UnprocessableTransferException;
 import com.lmartino.bank.domain.model.Account;
 import com.lmartino.bank.domain.model.Amount;
+import com.lmartino.bank.domain.model.Currency;
 import com.lmartino.bank.domain.model.Transfer;
 import com.lmartino.bank.repository.entity.AccountTable;
 import com.lmartino.bank.repository.entity.TransferTable;
@@ -38,8 +39,8 @@ public class TransferDAOTest {
         BigDecimal initialFooBalance = BigDecimal.valueOf(1250);
         BigDecimal initialBarBalance = BigDecimal.valueOf(321.99);
         BigDecimal transferAmount = BigDecimal.valueOf(450.50);
-        Account foo = accountDAO.saveAccount(Account.createNewAccount("Foo", Amount.of(initialFooBalance), null));
-        Account bar = accountDAO.saveAccount(Account.createNewAccount("Bar", Amount.of(initialBarBalance), null));
+        Account foo = accountDAO.saveAccount(Account.createNewAccount("Foo", Amount.of(initialFooBalance), Currency.of("EUR")));
+        Account bar = accountDAO.saveAccount(Account.createNewAccount("Bar", Amount.of(initialBarBalance), Currency.of("EUR")));
 
         Transfer requestedTransfer = Transfer.makeTransfer(foo, bar, Amount.of(transferAmount), "Robbing from rich and giving to the poor");
         Transfer createdTransfer = transferDAO.saveTransfer(requestedTransfer);
@@ -60,8 +61,8 @@ public class TransferDAOTest {
         BigDecimal initialFooBalance = BigDecimal.valueOf(1250);
         BigDecimal initialBarBalance = BigDecimal.valueOf(321.99);
         BigDecimal transferAmount = BigDecimal.valueOf(450.50);
-        Account foo = accountDAO.saveAccount(Account.createNewAccount("Foo", Amount.of(initialFooBalance), null));
-        Account bar = accountDAO.saveAccount(Account.createNewAccount("Bar", Amount.of(initialBarBalance), null));
+        Account foo = accountDAO.saveAccount(Account.createNewAccount("Foo", Amount.of(initialFooBalance), Currency.of("EUR")));
+        Account bar = accountDAO.saveAccount(Account.createNewAccount("Bar", Amount.of(initialBarBalance), Currency.of("EUR")));
 
         Transfer requestedTransfer = Transfer.makeTransfer(foo, bar, Amount.of(transferAmount), "Robbing from rich and giving to the poor");
 
