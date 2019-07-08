@@ -16,7 +16,8 @@ import java.sql.SQLException;
 import java.util.concurrent.Callable;
 
 import static com.lmartino.bank.domain.exception.DomainExceptionHandler.unprocessableTransferException;
-import static com.lmartino.bank.repository.DateTimeConverter.toDate;
+import static com.lmartino.bank.repository.converter.DateTimeConverter.toDate;
+import static com.lmartino.bank.repository.converter.TableConverter.toAccountTable;
 
 @Log
 public class TransferDAO extends BaseDaoImpl<TransferTable, String> implements TransferRepository {
@@ -57,16 +58,6 @@ public class TransferDAO extends BaseDaoImpl<TransferTable, String> implements T
             unprocessableTransferException(transfer);
             return null;
         }
-    }
-
-    protected AccountTable toAccountTable(Account account) {
-        AccountTable accountTable = new AccountTable();
-        accountTable.setId(account.getId().getValue());
-        accountTable.setName(account.getName());
-        accountTable.setBalance(account.getBalance().getMoney());
-        accountTable.setCreatedBy(toDate(account.getCreatedAt()));
-        accountTable.setCurrency(account.getCurrency().getValue());
-        return accountTable;
     }
 
 }

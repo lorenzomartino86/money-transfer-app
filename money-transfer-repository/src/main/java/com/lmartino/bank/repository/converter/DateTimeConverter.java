@@ -1,4 +1,4 @@
-package com.lmartino.bank.repository;
+package com.lmartino.bank.repository.converter;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;

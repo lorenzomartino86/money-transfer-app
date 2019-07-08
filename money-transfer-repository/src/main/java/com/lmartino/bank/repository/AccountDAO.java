@@ -5,9 +5,7 @@ import com.j256.ormlite.dao.BaseDaoImpl;
 import com.j256.ormlite.support.ConnectionSource;
 import com.lmartino.bank.domain.adapter.AccountRepository;
 import com.lmartino.bank.domain.model.Account;
-import com.lmartino.bank.domain.model.Amount;
-import com.lmartino.bank.domain.model.Currency;
-import com.lmartino.bank.domain.model.Id;
+import com.lmartino.bank.repository.converter.TableConverter;
 import com.lmartino.bank.repository.entity.AccountTable;
 import lombok.extern.java.Log;
 
@@ -16,8 +14,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static com.lmartino.bank.repository.DateTimeConverter.toDate;
-import static com.lmartino.bank.repository.DateTimeConverter.toLocalDateTime;
+import static com.lmartino.bank.repository.converter.TableConverter.toAccountTable;
+import static com.lmartino.bank.repository.converter.TableConverter.toDomainModel;
 
 @Log
 public class AccountDAO extends BaseDaoImpl<AccountTable, String> implements AccountRepository {
@@ -66,7 +64,7 @@ public class AccountDAO extends BaseDaoImpl<AccountTable, String> implements Acc
         try {
             List<AccountTable> accountTableList = super.queryForAll();
             return accountTableList.stream()
-                    .map(this::toDomainModel)
+                    .map(TableConverter::toDomainModel)
                     .collect(Collectors.toList());
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -83,25 +81,6 @@ public class AccountDAO extends BaseDaoImpl<AccountTable, String> implements Acc
         AccountTable accountTable = toAccountTable(account);
         super.update(accountTable);
         return accountTable;
-    }
-
-    protected AccountTable toAccountTable(Account account) {
-        AccountTable accountTable = new AccountTable();
-        accountTable.setId(account.getId().getValue());
-        accountTable.setName(account.getName());
-        accountTable.setBalance(account.getBalance().getMoney());
-        accountTable.setCreatedBy(toDate(account.getCreatedAt()));
-        accountTable.setCurrency(account.getCurrency().getValue());
-        return accountTable;
-    }
-
-    private Account toDomainModel(AccountTable accountTable) {
-        return Account.of(Id.of(accountTable.getId()),
-                accountTable.getName(),
-                Amount.of(accountTable.getBalance()),
-                toLocalDateTime(accountTable.getCreatedBy()),
-                Currency.of(accountTable.getCurrency())
-        );
     }
 
 }
