@@ -38,6 +38,16 @@ public class AccountDAO extends BaseDaoImpl<AccountTable, String> implements Acc
     }
 
     @Override
+    public Account updateAccount(Account account) {
+        try {
+            AccountTable accountTable = updateAccountTable(account);
+            return getAccountBy(accountTable.getId()).get();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     public Optional<Account> getAccountBy(String accountId){
         try {
             List<AccountTable> accountTableList = super.queryForEq("id", accountId);
@@ -75,7 +85,7 @@ public class AccountDAO extends BaseDaoImpl<AccountTable, String> implements Acc
         return accountTable;
     }
 
-    private AccountTable toAccountTable(Account account) {
+    protected AccountTable toAccountTable(Account account) {
         AccountTable accountTable = new AccountTable();
         accountTable.setId(account.getId().getValue());
         accountTable.setName(account.getName());

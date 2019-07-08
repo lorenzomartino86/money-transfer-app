@@ -1,7 +1,7 @@
 package com.lmartino.bank.bdd.steps;
 
 import com.google.gson.Gson;
-import com.lmartino.bank.app.Application;
+import com.lmartino.bank.app.MoneyTransferApp;
 import com.lmartino.bank.rest.dto.AccountDto;
 import com.lmartino.bank.rest.dto.CreateAccountDto;
 import cucumber.api.java.After;
@@ -10,17 +10,11 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import io.restassured.http.ContentType;
-import io.restassured.mapper.ObjectMapper;
-import io.restassured.response.Response;
-import io.restassured.response.ResponseBody;
 import org.junit.Assert;
-import org.junit.BeforeClass;
 
 import java.math.BigDecimal;
-import java.sql.SQLException;
 
 import static io.restassured.RestAssured.given;
-import static io.restassured.RestAssured.when;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 
@@ -30,15 +24,17 @@ public class AccountSteps {
     private String currency;
     private AccountDto responseBody;
 
+    private static MoneyTransferApp app;
+
     @Before
-    public void setUp() throws SQLException {
-        // Starting main jvm process
-        Application.start();
+    public void setUp() {
+        app = MoneyTransferApp.init();
+        app.start();
     }
 
     @After
     public void tearDown() {
-        Application.stop();
+        app.stop();
     }
 
     @Given("^name (.*)$")

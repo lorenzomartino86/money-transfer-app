@@ -1,7 +1,7 @@
 package com.lmartino.bank.bdd.steps;
 
 import com.google.gson.Gson;
-import com.lmartino.bank.app.Application;
+import com.lmartino.bank.app.MoneyTransferApp;
 import com.lmartino.bank.rest.dto.AccountDto;
 import com.lmartino.bank.rest.dto.CreateAccountDto;
 import com.lmartino.bank.rest.dto.MakeTransferDto;
@@ -15,7 +15,6 @@ import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 
 import java.math.BigDecimal;
-import java.sql.SQLException;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
@@ -28,14 +27,17 @@ public class TransferBetweenTwoAccountsSteps {
     private TransferDto responseBody;
     private Response response;
 
+    private static MoneyTransferApp app;
+
     @Before
-    public void setUp() throws SQLException {
-        Application.start();
+    public void setUp() {
+        app = MoneyTransferApp.init();
+        app.start();
     }
 
     @After
     public void tearDown() {
-        Application.stop();
+        app.stop();
     }
 
     @Given("^account (.*) with balance (.*)$")

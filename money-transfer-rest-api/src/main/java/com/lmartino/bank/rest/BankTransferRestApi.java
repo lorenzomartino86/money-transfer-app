@@ -1,6 +1,7 @@
 package com.lmartino.bank.rest;
 
 import com.google.gson.Gson;
+import com.google.inject.Inject;
 import com.lmartino.bank.domain.exception.InsufficientBalanceException;
 import com.lmartino.bank.domain.model.Amount;
 import com.lmartino.bank.domain.model.Transfer;
@@ -13,9 +14,16 @@ import static spark.Spark.exception;
 import static spark.Spark.post;
 
 
-public class BankTransferRestApi {
+public class BankTransferRestApi implements RestApi{
+    private final MakeTransferUseCase makeTransferUseCase;
 
-    public static void init(final MakeTransferUseCase makeTransferUseCase){
+    @Inject
+    public BankTransferRestApi(MakeTransferUseCase makeTransferUseCase) {
+        this.makeTransferUseCase = makeTransferUseCase;
+    }
+
+    @Override
+    public void init(){
 
         post("/api/transfers", (request, response) -> {
             response.type("application/json");
