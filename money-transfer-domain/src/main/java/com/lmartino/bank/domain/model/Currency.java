@@ -14,7 +14,6 @@ import static com.lmartino.bank.domain.exception.DomainExceptionHandler.unknownC
 @EqualsAndHashCode
 public class Currency {
     private String value;
-
     private static List<String> validCurrencies = Arrays.asList("EUR", "GBP", "USD");
 
     private Currency(String value) {

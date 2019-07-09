@@ -3,7 +3,6 @@ package com.lmartino.bank.domain.usecase;
 import com.lmartino.bank.domain.adapter.AccountRepository;
 import com.lmartino.bank.domain.exception.UnknownCurrencyCodeException;
 import com.lmartino.bank.domain.model.Account;
-import com.lmartino.bank.domain.model.AllowedCurrencies;
 import com.lmartino.bank.domain.model.Amount;
 import com.lmartino.bank.domain.model.Currency;
 import org.easymock.EasyMock;
@@ -19,8 +18,7 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 public class CreateAccountUseCaseTest {
 
     private AccountRepository mockAccountRepository = createNiceMock(AccountRepository.class);
-    private AllowedCurrencies mockAllowedCurrency = createNiceMock(AllowedCurrencies.class);
-    private CreateAccountUseCase createAccountUseCase = new CreateAccountUseCase(mockAccountRepository, mockAllowedCurrency);
+    private CreateAccountUseCase createAccountUseCase = new CreateAccountUseCase(mockAccountRepository);
 
     @Test
     public void givenNameBalanceAndEUR_whenUserCreateNewAccount_thenAccountIsCreated(){
