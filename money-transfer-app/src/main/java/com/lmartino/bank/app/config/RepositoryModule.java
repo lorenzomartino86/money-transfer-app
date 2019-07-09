@@ -6,8 +6,10 @@ import com.google.inject.Singleton;
 import com.google.inject.name.Named;
 import com.j256.ormlite.jdbc.JdbcPooledConnectionSource;
 import com.lmartino.bank.domain.adapter.AccountRepository;
+import com.lmartino.bank.domain.adapter.ExchangeRateRepository;
 import com.lmartino.bank.domain.adapter.TransferRepository;
 import com.lmartino.bank.repository.AccountDAO;
+import com.lmartino.bank.repository.ExchangeRateDAO;
 import com.lmartino.bank.repository.TransferDAO;
 
 import java.sql.SQLException;
@@ -36,5 +38,10 @@ public class RepositoryModule extends AbstractModule {
         return new TransferDAO(accountRepository, datasource);
     }
 
+    @Provides @Singleton @Named("exchangeRateRepository")
+    ExchangeRateRepository exchangeRateRepository(@Named("jdbcPooledConnectionSource") final JdbcPooledConnectionSource datasource)
+            throws SQLException {
+        return new ExchangeRateDAO(datasource);
+    }
 
 }

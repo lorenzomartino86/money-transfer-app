@@ -9,15 +9,15 @@ import java.math.BigDecimal;
 
 @Getter
 @Setter
-@DatabaseTable(tableName = "account")
+@DatabaseTable(tableName = "exchange_rate")
 public class ExchangeRateTable {
     @DatabaseField(canBeNull = false, id = true)
     private String id;
 
-    @DatabaseField(canBeNull = false, uniqueCombo = true)
+    @DatabaseField(canBeNull = false)
     private String fromCurrency;
 
-    @DatabaseField(canBeNull = false, uniqueCombo = true)
+    @DatabaseField(canBeNull = false)
     private String toCurrency;
 
     @DatabaseField(canBeNull = false)
