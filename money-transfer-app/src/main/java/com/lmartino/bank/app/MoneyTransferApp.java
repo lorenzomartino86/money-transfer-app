@@ -3,10 +3,16 @@ package com.lmartino.bank.app;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
+import com.google.inject.name.Named;
+import com.j256.ormlite.jdbc.JdbcPooledConnectionSource;
+import com.j256.ormlite.table.TableUtils;
 import com.lmartino.bank.app.config.AppModule;
 import com.lmartino.bank.app.config.DomainModule;
 import com.lmartino.bank.app.config.RepositoryModule;
 import com.lmartino.bank.app.config.RestApiModule;
+import com.lmartino.bank.app.exception.MoneyTransferAppInitException;
+import com.lmartino.bank.repository.entity.AccountTable;
+import com.lmartino.bank.repository.entity.TransferTable;
 import com.lmartino.bank.rest.AccountRestApi;
 import com.lmartino.bank.rest.BankTransferRestApi;
 import spark.Spark;
@@ -20,11 +26,16 @@ public class MoneyTransferApp{
 
     private final AccountRestApi accountRestApi;
     private final BankTransferRestApi bankTransferRestApi;
+    private final JdbcPooledConnectionSource datasource;
 
     @Inject
-    MoneyTransferApp(final AccountRestApi accountRestApi, final BankTransferRestApi bankTransferRestApi){
+    MoneyTransferApp(final AccountRestApi accountRestApi,
+                     final BankTransferRestApi bankTransferRestApi,
+                     final @Named("jdbcPooledConnectionSource") JdbcPooledConnectionSource datasource
+                     ){
         this.accountRestApi = accountRestApi;
         this.bankTransferRestApi = bankTransferRestApi;
+        this.datasource = datasource;
     }
 
     public void start() {
@@ -40,6 +51,14 @@ public class MoneyTransferApp{
 
         accountRestApi.init();
         bankTransferRestApi.init();
+
+        // Initialize database with injected datasource
+        try {
+            TableUtils.createTableIfNotExists(datasource, AccountTable.class);
+            TableUtils.createTableIfNotExists(datasource, TransferTable.class);
+        } catch (SQLException e) {
+            throw new MoneyTransferAppInitException(e);
+        }
 
         awaitInitialization(); // Wait for server to be initialized
 

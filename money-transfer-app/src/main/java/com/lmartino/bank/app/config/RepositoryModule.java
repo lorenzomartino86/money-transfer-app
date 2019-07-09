@@ -5,13 +5,10 @@ import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
 import com.j256.ormlite.jdbc.JdbcPooledConnectionSource;
-import com.j256.ormlite.table.TableUtils;
 import com.lmartino.bank.domain.adapter.AccountRepository;
 import com.lmartino.bank.domain.adapter.TransferRepository;
 import com.lmartino.bank.repository.AccountDAO;
 import com.lmartino.bank.repository.TransferDAO;
-import com.lmartino.bank.repository.entity.AccountTable;
-import com.lmartino.bank.repository.entity.TransferTable;
 
 import java.sql.SQLException;
 
@@ -22,9 +19,6 @@ public class RepositoryModule extends AbstractModule {
     @Provides @Singleton @Named("jdbcPooledConnectionSource")
     JdbcPooledConnectionSource jdbcPooledConnectionSource() throws SQLException {
         JdbcPooledConnectionSource connectionSource = new JdbcPooledConnectionSource("jdbc:h2:mem:bank;DB_CLOSE_DELAY=-1");
-        // Creating tables if not exist
-        TableUtils.createTableIfNotExists(connectionSource, AccountTable.class);
-        TableUtils.createTableIfNotExists(connectionSource, TransferTable.class);
         return connectionSource;
     }
 
