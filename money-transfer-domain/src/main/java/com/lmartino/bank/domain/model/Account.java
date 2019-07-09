@@ -53,4 +53,8 @@ public class Account {
     public void deposit(Amount amount) {
         this.balance.increaseBy(amount);
     }
+
+    public boolean hasSameCurrency(Account other){
+        return this.currency.getValue().equals(other.getCurrency().getValue());
+    }
 }

@@ -1,9 +1,11 @@
 package com.lmartino.bank.domain.usecase;
 
 import com.lmartino.bank.domain.adapter.AccountRepository;
+import com.lmartino.bank.domain.adapter.ExchangeRateRepository;
 import com.lmartino.bank.domain.adapter.TransferRepository;
 import com.lmartino.bank.domain.model.Account;
 import com.lmartino.bank.domain.model.Amount;
+import com.lmartino.bank.domain.model.Currency;
 import com.lmartino.bank.domain.model.Transfer;
 import org.easymock.EasyMock;
 import org.junit.Assert;
@@ -20,7 +22,9 @@ public class MakeTransferUseCaseTest {
 
     private TransferRepository mockTransferRepository = createNiceMock(TransferRepository.class);
     private AccountRepository mockAccountRepository = createNiceMock(AccountRepository.class);
-    private MakeTransferUseCase makeTransferUseCase = new MakeTransferUseCase(mockAccountRepository, mockTransferRepository);
+    private ExchangeRateRepository mockExchangeRateRepository = createNiceMock(ExchangeRateRepository.class);
+    private MakeTransferUseCase makeTransferUseCase = new MakeTransferUseCase(mockAccountRepository,
+            mockTransferRepository, mockExchangeRateRepository);
 
     @Test
     public void canMakeTransferFromFooAccountIntoBarAccount(){
@@ -28,14 +32,14 @@ public class MakeTransferUseCaseTest {
         String transferDescription = "Transfer Description";
 
         // Account mock and stubs
-        Account fooAccount = Account.createNewAccount("Foo", Amount.of(BigDecimal.valueOf(1542.35)), null);
-        Account barAccount = Account.createNewAccount("Bar", Amount.of(BigDecimal.valueOf(765.91)), null);
+        Account fooAccount = Account.createNewAccount("Foo", Amount.of(BigDecimal.valueOf(1542.35)), Currency.of("EUR"));
+        Account barAccount = Account.createNewAccount("Bar", Amount.of(BigDecimal.valueOf(765.91)), Currency.of("EUR"));
         expect(mockAccountRepository.getAccountBy(EasyMock.anyString())).andReturn(Optional.of(barAccount)).times(1);
         expect(mockAccountRepository.getAccountBy(EasyMock.anyString())).andReturn(Optional.of(fooAccount)).times(1);
         replay(mockAccountRepository);
 
         // Transfer mock and stubs
-        Transfer mockedTransfer = Transfer.makeTransfer(fooAccount, barAccount, transferAmount, transferDescription, null);
+        Transfer mockedTransfer = Transfer.makeTransfer(fooAccount, barAccount, transferAmount, transferDescription, BigDecimal.ONE);
         expect(mockTransferRepository.saveTransfer(EasyMock.anyObject(Transfer.class))).andReturn(mockedTransfer).times(1);
         replay(mockTransferRepository);
 

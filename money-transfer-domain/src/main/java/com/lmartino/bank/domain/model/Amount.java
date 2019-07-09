@@ -37,7 +37,7 @@ public class Amount {
         money = money.add(amount.getMoney());
     }
 
-    public void applyRate(final BigDecimal rate){
-        money = money.multiply(rate);
+    public Amount applyRate(final BigDecimal rate){
+        return Amount.of(money.multiply(rate));
     }
 }

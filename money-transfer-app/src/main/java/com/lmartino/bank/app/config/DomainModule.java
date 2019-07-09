@@ -5,10 +5,12 @@ import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
 import com.lmartino.bank.domain.adapter.AccountRepository;
+import com.lmartino.bank.domain.adapter.ExchangeRateRepository;
 import com.lmartino.bank.domain.adapter.TransferRepository;
 import com.lmartino.bank.domain.usecase.CreateAccountUseCase;
 import com.lmartino.bank.domain.usecase.GetAccountUseCase;
 import com.lmartino.bank.domain.usecase.MakeTransferUseCase;
+import jdk.jfr.Name;
 
 public class DomainModule extends AbstractModule {
     @Override
@@ -26,8 +28,10 @@ public class DomainModule extends AbstractModule {
 
     @Provides @Singleton @Named("makeTransferUseCase")
     MakeTransferUseCase makeTransferUseCase(@Named("accountRepository") final AccountRepository accountRepository,
-                                            @Named("transferRepository") final TransferRepository transferRepository){
-        return new MakeTransferUseCase(accountRepository, transferRepository);
+                                            @Named("transferRepository") final TransferRepository transferRepository,
+                                            @Named("exchangeRateRepository") final ExchangeRateRepository exchangeRateRepository
+                                            ){
+        return new MakeTransferUseCase(accountRepository, transferRepository, exchangeRateRepository);
     }
 
 }

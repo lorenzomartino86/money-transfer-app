@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.ToString;
 import lombok.extern.java.Log;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
@@ -38,9 +39,9 @@ public class Transfer {
                                         final Account toAccount,
                                         final Amount amount,
                                         final String description,
-                                        final ExchangeRate exchangeRate){
+                                        final BigDecimal rate){
         fromAccount.withdraw(amount);
-        toAccount.deposit(amount);
+        toAccount.deposit(amount.applyRate(rate));
         LocalDateTime createdAt = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
         Transfer transfer = new Transfer(Id.create(), fromAccount, toAccount, amount, description, createdAt);
         log.info(String.format("Created transfer %s", transfer));
