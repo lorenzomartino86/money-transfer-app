@@ -11,7 +11,9 @@ import com.lmartino.bank.app.config.DomainModule;
 import com.lmartino.bank.app.config.RepositoryModule;
 import com.lmartino.bank.app.config.RestApiModule;
 import com.lmartino.bank.app.exception.MoneyTransferAppInitException;
+import com.lmartino.bank.domain.model.ExchangeRate;
 import com.lmartino.bank.repository.entity.AccountTable;
+import com.lmartino.bank.repository.entity.ExchangeRateTable;
 import com.lmartino.bank.repository.entity.TransferTable;
 import com.lmartino.bank.rest.AccountRestApi;
 import com.lmartino.bank.rest.BankTransferRestApi;
@@ -56,6 +58,7 @@ public class MoneyTransferApp{
         try {
             TableUtils.createTableIfNotExists(datasource, AccountTable.class);
             TableUtils.createTableIfNotExists(datasource, TransferTable.class);
+            TableUtils.createTableIfNotExists(datasource, ExchangeRateTable.class);
         } catch (SQLException e) {
             throw new MoneyTransferAppInitException(e);
         }
