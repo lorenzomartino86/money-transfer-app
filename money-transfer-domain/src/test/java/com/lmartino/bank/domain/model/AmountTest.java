@@ -45,4 +45,20 @@ public class AmountTest {
         Assert.assertThat(greaterAmount.isGreaterThan(lowerAmount), is(true));
     }
 
+    @Test
+    public void canApplyIdentityRateOnAmount(){
+        BigDecimal value = BigDecimal.valueOf(12.99);
+        Amount amount = Amount.of(value);
+        amount.applyRate(BigDecimal.ONE);
+        Assert.assertThat(amount.getMoney(), is(value));
+    }
+
+    @Test
+    public void canApplyRateOnAmount(){
+        BigDecimal value = BigDecimal.ONE;
+        Amount amount = Amount.of(value);
+        amount.applyRate(BigDecimal.valueOf(0.89919));
+        Assert.assertThat(amount.getMoney().doubleValue(), is(0.89919));
+    }
+
 }

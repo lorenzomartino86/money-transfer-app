@@ -37,7 +37,8 @@ public class Transfer {
     public static Transfer makeTransfer(final Account fromAccount,
                                         final Account toAccount,
                                         final Amount amount,
-                                        final String description){
+                                        final String description,
+                                        final ExchangeRate exchangeRate){
         fromAccount.withdraw(amount);
         toAccount.deposit(amount);
         LocalDateTime createdAt = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);

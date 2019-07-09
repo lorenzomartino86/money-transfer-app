@@ -2,6 +2,8 @@ package com.lmartino.bank.domain.model;
 
 import lombok.Getter;
 
+import java.math.BigDecimal;
+
 @Getter
 public class ExchangeRate {
     private Id id;

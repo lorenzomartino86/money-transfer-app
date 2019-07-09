@@ -36,4 +36,8 @@ public class Amount {
     public void increaseBy(Amount amount) {
         money = money.add(amount.getMoney());
     }
+
+    public void applyRate(final BigDecimal rate){
+        money = money.multiply(rate);
+    }
 }

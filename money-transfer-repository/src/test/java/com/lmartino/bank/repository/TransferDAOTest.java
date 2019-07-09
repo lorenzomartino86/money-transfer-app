@@ -42,7 +42,7 @@ public class TransferDAOTest {
         Account foo = accountDAO.saveAccount(Account.createNewAccount("Foo", Amount.of(initialFooBalance), Currency.of("EUR")));
         Account bar = accountDAO.saveAccount(Account.createNewAccount("Bar", Amount.of(initialBarBalance), Currency.of("EUR")));
 
-        Transfer requestedTransfer = Transfer.makeTransfer(foo, bar, Amount.of(transferAmount), "Robbing from rich and giving to the poor");
+        Transfer requestedTransfer = Transfer.makeTransfer(foo, bar, Amount.of(transferAmount), "Robbing from rich and giving to the poor", null);
         Transfer createdTransfer = transferDAO.saveTransfer(requestedTransfer);
         Assert.assertThat(createdTransfer, is(notNullValue()));
         Assert.assertThat(createdTransfer, is(requestedTransfer));
@@ -64,7 +64,7 @@ public class TransferDAOTest {
         Account foo = accountDAO.saveAccount(Account.createNewAccount("Foo", Amount.of(initialFooBalance), Currency.of("EUR")));
         Account bar = accountDAO.saveAccount(Account.createNewAccount("Bar", Amount.of(initialBarBalance), Currency.of("EUR")));
 
-        Transfer requestedTransfer = Transfer.makeTransfer(foo, bar, Amount.of(transferAmount), "Robbing from rich and giving to the poor");
+        Transfer requestedTransfer = Transfer.makeTransfer(foo, bar, Amount.of(transferAmount), "Robbing from rich and giving to the poor", null);
 
         try{
             // Dropping transfer table at runtime to simulate a failure during the save transfer transaction

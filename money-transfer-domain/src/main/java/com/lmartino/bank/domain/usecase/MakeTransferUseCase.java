@@ -27,7 +27,7 @@ public class MakeTransferUseCase {
         Optional<Account> toAccount = accountRepository.getAccountBy(toAccountId);
         if (toAccount.isEmpty()) unkownAccountException(toAccountId);
 
-        Transfer transfer = Transfer.makeTransfer(fromAccount.get(), toAccount.get(), amount, description);
+        Transfer transfer = Transfer.makeTransfer(fromAccount.get(), toAccount.get(), amount, description, null);
 
         return transferRepository.saveTransfer(transfer);
     }

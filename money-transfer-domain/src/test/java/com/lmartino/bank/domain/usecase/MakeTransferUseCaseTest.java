@@ -35,7 +35,7 @@ public class MakeTransferUseCaseTest {
         replay(mockAccountRepository);
 
         // Transfer mock and stubs
-        Transfer mockedTransfer = Transfer.makeTransfer(fooAccount, barAccount, transferAmount, transferDescription);
+        Transfer mockedTransfer = Transfer.makeTransfer(fooAccount, barAccount, transferAmount, transferDescription, null);
         expect(mockTransferRepository.saveTransfer(EasyMock.anyObject(Transfer.class))).andReturn(mockedTransfer).times(1);
         replay(mockTransferRepository);
 
