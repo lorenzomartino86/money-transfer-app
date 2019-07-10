@@ -35,6 +35,15 @@ public class Transfer {
         this.createdAt = createdAt;
     }
 
+    public static Transfer of(final Id id,
+                              final Account fromAccount,
+                              final Account toAccount,
+                              final Amount amount,
+                              final String description,
+                              final LocalDateTime createdAt){
+        return  new Transfer(id, fromAccount, toAccount, amount, description, createdAt);
+    }
+
     public static Transfer makeTransfer(final Account fromAccount,
                                         final Account toAccount,
                                         final Amount amount,

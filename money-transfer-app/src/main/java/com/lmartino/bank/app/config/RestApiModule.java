@@ -5,6 +5,7 @@ import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
 import com.lmartino.bank.domain.usecase.CreateAccountUseCase;
+import com.lmartino.bank.domain.usecase.GetAccountTransfersUseCase;
 import com.lmartino.bank.domain.usecase.GetAccountUseCase;
 import com.lmartino.bank.domain.usecase.MakeTransferUseCase;
 import com.lmartino.bank.rest.AccountRestApi;
@@ -17,9 +18,10 @@ public class RestApiModule extends AbstractModule {
     @Provides @Singleton
     AccountRestApi createAccountUseCase(
             @Named("createAccountUseCase") final CreateAccountUseCase createAccountUseCase,
-            @Named("getAccountUseCase") final GetAccountUseCase getAccountUseCase
+            @Named("getAccountUseCase") final GetAccountUseCase getAccountUseCase,
+            @Named("getAccountTransfersUseCase") final GetAccountTransfersUseCase getAccountTransfersUseCase
     ){
-        return new AccountRestApi(createAccountUseCase, getAccountUseCase);
+        return new AccountRestApi(createAccountUseCase, getAccountUseCase, getAccountTransfersUseCase);
     }
 
     @Provides @Singleton

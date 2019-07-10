@@ -29,6 +29,7 @@ public class ExchangeRateDAO extends BaseDaoImpl<ExchangeRateTable, String> impl
                     .and()
                     .eq("toCurrency", toCurrency);
             List<ExchangeRateTable> rates = queryBuilder.query();
+            System.out.println(super.queryForAll());
             if (rates.isEmpty()){
                 return Optional.empty();
             }

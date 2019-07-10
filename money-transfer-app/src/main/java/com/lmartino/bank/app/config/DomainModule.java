@@ -8,9 +8,9 @@ import com.lmartino.bank.domain.adapter.AccountRepository;
 import com.lmartino.bank.domain.adapter.ExchangeRateRepository;
 import com.lmartino.bank.domain.adapter.TransferRepository;
 import com.lmartino.bank.domain.usecase.CreateAccountUseCase;
+import com.lmartino.bank.domain.usecase.GetAccountTransfersUseCase;
 import com.lmartino.bank.domain.usecase.GetAccountUseCase;
 import com.lmartino.bank.domain.usecase.MakeTransferUseCase;
-import jdk.jfr.Name;
 
 public class DomainModule extends AbstractModule {
     @Override
@@ -22,8 +22,15 @@ public class DomainModule extends AbstractModule {
     }
 
     @Provides @Singleton @Named("getAccountUseCase")
-    GetAccountUseCase getAccountUseCase(@Named("accountRepository") final AccountRepository accountRepository){
-        return new GetAccountUseCase(accountRepository);
+    GetAccountUseCase getAccountUseCase(@Named("accountRepository") final AccountRepository accountRepository,
+                                        @Named("transferRepository") final TransferRepository transferRepository){
+        return new GetAccountUseCase(accountRepository, transferRepository);
+    }
+
+    @Provides @Singleton @Named("getAccountTransfersUseCase")
+    GetAccountTransfersUseCase getAccountTransfersUseCase(@Named("accountRepository") final AccountRepository accountRepository,
+                                                 @Named("transferRepository") final TransferRepository transferRepository){
+        return new GetAccountTransfersUseCase(accountRepository, transferRepository);
     }
 
     @Provides @Singleton @Named("makeTransferUseCase")
