@@ -22,9 +22,8 @@ public class DomainModule extends AbstractModule {
     }
 
     @Provides @Singleton @Named("getAccountUseCase")
-    GetAccountUseCase getAccountUseCase(@Named("accountRepository") final AccountRepository accountRepository,
-                                        @Named("transferRepository") final TransferRepository transferRepository){
-        return new GetAccountUseCase(accountRepository, transferRepository);
+    GetAccountUseCase getAccountUseCase(@Named("accountRepository") final AccountRepository accountRepository){
+        return new GetAccountUseCase(accountRepository);
     }
 
     @Provides @Singleton @Named("getAccountTransfersUseCase")

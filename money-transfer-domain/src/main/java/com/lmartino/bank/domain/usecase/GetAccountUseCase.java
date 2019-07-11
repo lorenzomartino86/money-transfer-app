@@ -1,7 +1,6 @@
 package com.lmartino.bank.domain.usecase;
 
 import com.lmartino.bank.domain.adapter.AccountRepository;
-import com.lmartino.bank.domain.adapter.TransferRepository;
 import com.lmartino.bank.domain.model.Account;
 
 import java.util.List;
@@ -11,12 +10,9 @@ import static com.lmartino.bank.domain.exception.DomainExceptionHandler.unkownAc
 
 public class GetAccountUseCase {
     private AccountRepository accountRepository;
-    private TransferRepository transferRepository;
 
-    public GetAccountUseCase(final AccountRepository accountRepository,
-                             final TransferRepository transferRepository) {
+    public GetAccountUseCase(final AccountRepository accountRepository) {
         this.accountRepository = accountRepository;
-        this.transferRepository = transferRepository;
     }
 
     public Account compose(final String accountId) {
