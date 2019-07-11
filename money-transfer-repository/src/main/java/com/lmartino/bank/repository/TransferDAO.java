@@ -1,6 +1,5 @@
 package com.lmartino.bank.repository;
 
-import com.google.inject.Inject;
 import com.j256.ormlite.dao.BaseDaoImpl;
 import com.j256.ormlite.misc.TransactionManager;
 import com.j256.ormlite.support.ConnectionSource;
@@ -26,7 +25,6 @@ import static com.lmartino.bank.repository.converter.TableConverter.toAccountTab
 public class TransferDAO extends BaseDaoImpl<TransferTable, String> implements TransferRepository {
     private AccountRepository accountRepository;
 
-    @Inject
     public TransferDAO(AccountRepository accountRepository, ConnectionSource connectionSource) throws SQLException {
         super(connectionSource, TransferTable.class);
         this.accountRepository = accountRepository;

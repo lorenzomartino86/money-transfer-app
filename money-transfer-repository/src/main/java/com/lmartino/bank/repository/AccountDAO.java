@@ -1,6 +1,5 @@
 package com.lmartino.bank.repository;
 
-import com.google.inject.Inject;
 import com.j256.ormlite.dao.BaseDaoImpl;
 import com.j256.ormlite.support.ConnectionSource;
 import com.lmartino.bank.domain.adapter.AccountRepository;
@@ -21,7 +20,6 @@ import static com.lmartino.bank.repository.converter.TableConverter.toDomainMode
 @Log
 public class AccountDAO extends BaseDaoImpl<AccountTable, String> implements AccountRepository {
 
-    @Inject
     public AccountDAO(ConnectionSource connectionSource) throws SQLException {
         super(connectionSource, AccountTable.class);
     }

@@ -19,7 +19,20 @@ See the [domain documentation](money-transfer-domain/README.md) for more details
 
 ### Technical Background
 
+This project is using following technologies:
 
+1. Jdk 1.8
+2. SparkJava as microframework for web application
+3. Google Guice to take advantage of a dependency injection framework avoiding the footprint of frameworks like Spring
+4. H2 database
+5. Ormlite for fast prototype of a lightweight orm
+6. Cucumber for acceptance tests 
+
+A CI job has been created in order to:
+
+a. Build project at every commit
+b. Provide coverage metrics and expose in the codecov dashboard
+c. Publish sonar qube analysis
 
 ### Build Instructions
 ```sh

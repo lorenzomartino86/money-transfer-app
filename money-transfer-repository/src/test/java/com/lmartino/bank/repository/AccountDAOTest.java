@@ -1,13 +1,11 @@
 package com.lmartino.bank.repository;
 
-import com.google.inject.matcher.Matchers;
 import com.j256.ormlite.jdbc.JdbcPooledConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import com.lmartino.bank.domain.model.Account;
 import com.lmartino.bank.domain.model.Currency;
 import com.lmartino.bank.domain.model.Money;
 import com.lmartino.bank.repository.entity.AccountTable;
-import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
