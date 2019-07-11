@@ -35,11 +35,6 @@ public class TransferDAO extends BaseDaoImpl<TransferTable, String> implements T
     @Override
     public Transfer saveTransfer(Transfer transfer) {
         try {
-            List<TransferTable> transferTables = super.queryForAll();
-            for (TransferTable transferTable : transferTables) {
-                log.info(String.format("transfer %s", transferTable));
-            }
-
             // Open a database transaction
             TransactionManager.callInTransaction(connectionSource,
                     (Callable<Void>) () -> {

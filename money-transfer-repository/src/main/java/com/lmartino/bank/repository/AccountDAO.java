@@ -7,6 +7,7 @@ import com.lmartino.bank.domain.adapter.AccountRepository;
 import com.lmartino.bank.domain.model.Account;
 import com.lmartino.bank.repository.converter.TableConverter;
 import com.lmartino.bank.repository.entity.AccountTable;
+import com.lmartino.bank.repository.exception.RepositoryException;
 import lombok.extern.java.Log;
 
 import java.sql.SQLException;
@@ -31,7 +32,7 @@ public class AccountDAO extends BaseDaoImpl<AccountTable, String> implements Acc
             AccountTable accountTable = saveAccountTable(account);
             return getAccountBy(accountTable.getId()).get();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RepositoryException(e);
         }
     }
 
@@ -41,7 +42,7 @@ public class AccountDAO extends BaseDaoImpl<AccountTable, String> implements Acc
             AccountTable accountTable = updateAccountTable(account);
             return getAccountBy(accountTable.getId()).get();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RepositoryException(e);
         }
     }
 
@@ -55,7 +56,7 @@ public class AccountDAO extends BaseDaoImpl<AccountTable, String> implements Acc
             AccountTable accountTable = accountTableList.get(0);
             return Optional.of(toDomainModel(accountTable));
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RepositoryException(e);
         }
     }
 
@@ -67,7 +68,7 @@ public class AccountDAO extends BaseDaoImpl<AccountTable, String> implements Acc
                     .map(TableConverter::toDomainModel)
                     .collect(Collectors.toList());
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RepositoryException(e);
         }
     }
 
@@ -81,7 +82,7 @@ public class AccountDAO extends BaseDaoImpl<AccountTable, String> implements Acc
                 return Optional.of(toDomainModel(accountTableList.get(0)));
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RepositoryException(e);
         }
     }
 
