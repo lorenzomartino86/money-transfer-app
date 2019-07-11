@@ -71,6 +71,11 @@ public class AccountDAO extends BaseDaoImpl<AccountTable, String> implements Acc
         }
     }
 
+    @Override
+    public Optional<Account> getAccountByName(String accountName) {
+        return Optional.empty();
+    }
+
     protected AccountTable saveAccountTable(Account account) throws SQLException {
         AccountTable accountTable = toAccountTable(account);
         super.create(accountTable);

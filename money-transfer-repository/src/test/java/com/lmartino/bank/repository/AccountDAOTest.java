@@ -3,8 +3,8 @@ package com.lmartino.bank.repository;
 import com.j256.ormlite.jdbc.JdbcPooledConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import com.lmartino.bank.domain.model.Account;
-import com.lmartino.bank.domain.model.Amount;
 import com.lmartino.bank.domain.model.Currency;
+import com.lmartino.bank.domain.model.Money;
 import com.lmartino.bank.repository.entity.AccountTable;
 import org.junit.Assert;
 import org.junit.Before;
@@ -18,6 +18,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 
 public class AccountDAOTest {
+    private Currency eur = Currency.of("EUR");
     private AccountDAO accountDAO;
 
     @Before
@@ -30,7 +31,7 @@ public class AccountDAOTest {
     @Test
     public void canCreateNewAccount(){
         Account requestedAccount = Account.createNewAccount("Test Account",
-                Amount.of(BigDecimal.valueOf(1000.99)), Currency.of("EUR"));
+                Money.of(BigDecimal.valueOf(1000.99), eur));
         Account createdAccount = accountDAO.saveAccount(requestedAccount);
         Assert.assertThat(createdAccount, is(notNullValue()));
         Assert.assertThat(createdAccount, is(requestedAccount));
@@ -39,7 +40,7 @@ public class AccountDAOTest {
     @Test
     public void canGetAccountById(){
         Account requestedAccount = Account.createNewAccount("Test Account",
-                Amount.of(BigDecimal.valueOf(1000.99)), Currency.of("EUR"));
+                Money.of(BigDecimal.valueOf(1000.99), eur));
         accountDAO.saveAccount(requestedAccount);
         Optional<Account> account = accountDAO.getAccountBy(requestedAccount.getId().getValue());
         Assert.assertThat(account.isEmpty(), is(false));

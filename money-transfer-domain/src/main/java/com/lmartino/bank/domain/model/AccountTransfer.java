@@ -16,24 +16,24 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode
 public class AccountTransfer {
     private Id id;
-    private Id toAccountId;
-    private Amount amount;
+    private TransferType type;
+    private Money money;
     private String description;
     private LocalDateTime createdAt;
 
-    public AccountTransfer(Id id, Id toAccountId, Amount amount, String description, LocalDateTime createdAt) {
+    public AccountTransfer(Id id, TransferType type, Money money, String description, LocalDateTime createdAt) {
         this.id = id;
-        this.toAccountId = toAccountId;
-        this.amount = amount;
+        this.type = type;
+        this.money = money;
         this.description = description;
         this.createdAt = createdAt;
     }
 
     public static AccountTransfer of(final Id id,
-                                     final Id toAccountId,
-                                     final Amount amount,
+                                     final TransferType type,
+                                     final Money money,
                                      final String description,
                                      final LocalDateTime createdAt){
-        return new AccountTransfer(id, toAccountId, amount, description, createdAt);
+        return new AccountTransfer(id, type, money, description, createdAt);
     }
 }

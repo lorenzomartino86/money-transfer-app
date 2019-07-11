@@ -4,8 +4,8 @@ import com.lmartino.bank.domain.adapter.AccountRepository;
 import com.lmartino.bank.domain.adapter.ExchangeRateRepository;
 import com.lmartino.bank.domain.adapter.TransferRepository;
 import com.lmartino.bank.domain.model.Account;
-import com.lmartino.bank.domain.model.Amount;
 import com.lmartino.bank.domain.model.ExchangeRate;
+import com.lmartino.bank.domain.model.Money;
 import com.lmartino.bank.domain.model.Transfer;
 
 import java.math.BigDecimal;
@@ -26,7 +26,7 @@ public class MakeTransferUseCase {
         this.exchangeRateRepository = exchangeRateRepository;
     }
 
-    public Transfer compose(final String fromAccountId, final String toAccountId, final Amount amount, final String description) {
+    public Transfer compose(final String fromAccountId, final String toAccountId, final Money money, final String description) {
 
         Optional<Account> fromAccount = accountRepository.getAccountBy(fromAccountId);
         if (fromAccount.isEmpty()) unkownAccountException(fromAccountId);
@@ -34,18 +34,18 @@ public class MakeTransferUseCase {
         Optional<Account> toAccount = accountRepository.getAccountBy(toAccountId);
         if (toAccount.isEmpty()) unkownAccountException(toAccountId);
 
-
         Account sourceAccount = fromAccount.get();
         Account targetAccount = toAccount.get();
 
         BigDecimal rate;
         if (sourceAccount.hasSameCurrency(targetAccount)) rate = BigDecimal.ONE;
         else {
-            Optional<ExchangeRate> exchangeRate = exchangeRateRepository.getRate(sourceAccount.getCurrency().getValue(),
+            Optional<ExchangeRate> exchangeRate = exchangeRateRepository.getRate(
+                    sourceAccount.getCurrency().getValue(),
                     targetAccount.getCurrency().getValue());
-            rate = exchangeRate.get().getRate().getMoney();
+            rate = exchangeRate.get().getRate();
         }
-        Transfer transfer = Transfer.makeTransfer(sourceAccount, targetAccount, amount, description, rate);
+        Transfer transfer = Transfer.makeTransfer(sourceAccount, targetAccount, money, description, rate);
 
         return transferRepository.saveTransfer(transfer);
     }

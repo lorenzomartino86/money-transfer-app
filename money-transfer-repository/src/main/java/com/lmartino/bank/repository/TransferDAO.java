@@ -3,7 +3,6 @@ package com.lmartino.bank.repository;
 import com.google.inject.Inject;
 import com.j256.ormlite.dao.BaseDaoImpl;
 import com.j256.ormlite.misc.TransactionManager;
-import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
 import com.lmartino.bank.domain.adapter.AccountRepository;
 import com.lmartino.bank.domain.adapter.TransferRepository;
@@ -13,9 +12,11 @@ import com.lmartino.bank.repository.entity.TransferTable;
 import lombok.extern.java.Log;
 
 import java.sql.SQLException;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.lmartino.bank.domain.exception.DomainExceptionHandler.unprocessableTransferException;
 import static com.lmartino.bank.repository.converter.DateTimeConverter.toDate;
@@ -44,7 +45,8 @@ public class TransferDAO extends BaseDaoImpl<TransferTable, String> implements T
 
                         TransferTable transferTable = new TransferTable();
                         transferTable.setId(transfer.getId().getValue());
-                        transferTable.setAmount(transfer.getAmount().getMoney());
+                        transferTable.setCurrency(transfer.getAmount().getCurrency().getValue());
+                        transferTable.setAmount(transfer.getAmount().getValue());
                         transferTable.setFromAccount(toAccountTable(fromAccount));
                         transferTable.setToAccount(toAccountTable(toAccount));
                         transferTable.setDescription(transfer.getDescription());
@@ -64,15 +66,21 @@ public class TransferDAO extends BaseDaoImpl<TransferTable, String> implements T
     }
 
     @Override
-    public List<AccountTransfer> getLastTransfersFor(final String accountId, final Long offset, final Long limit) {
+    public List<AccountTransfer> getTransfersBy(final String accountId) {
         try {
-            QueryBuilder<TransferTable, String> queryBuilder = super.queryBuilder();
-            queryBuilder.where()
-                    .eq("from_account_id", accountId)
-                    .or()
-                    .eq("to_account_id", accountId);
-            List<TransferTable> transferTableRows = queryBuilder.offset(offset).limit(limit).query();
-            return transferTableRows.stream().map(this::toAccountTransfer).collect(Collectors.toList());
+
+            List<TransferTable> withdrawTransfers = super.queryForEq("from_account_id", accountId);
+            List<AccountTransfer> accountWithdraws = withdrawTransfers.stream()
+                    .map(w -> toAccountTransfer(w, TransferType.WITHDRAW)).collect(Collectors.toList());
+
+            List<TransferTable> depositTransfers = super.queryForEq("to_account_id", accountId);
+            List<AccountTransfer> accountDeposits = depositTransfers.stream()
+                    .map(w -> toAccountTransfer(w, TransferType.DEPOSIT)).collect(Collectors.toList());
+
+            return Stream.concat(accountWithdraws.stream(), accountDeposits.stream())
+                    .sorted(Comparator.comparing(AccountTransfer::getCreatedAt))
+                    .collect(Collectors.toList());
+
         } catch (SQLException e) {
             log.info(e.getMessage());
             throw new RuntimeException(e);
@@ -84,16 +92,16 @@ public class TransferDAO extends BaseDaoImpl<TransferTable, String> implements T
                 Id.of(t.getId()),
                 TableConverter.toDomainModel(t.getFromAccount()),
                 TableConverter.toDomainModel(t.getToAccount()),
-                Amount.of(t.getAmount()),
+                Money.of(t.getAmount(), Currency.of(t.getCurrency())),
                 t.getDescription(),
                 toLocalDateTime(t.getCreatedAt()));
     }
 
-    private AccountTransfer toAccountTransfer(TransferTable t) {
+    private AccountTransfer toAccountTransfer(TransferTable t, TransferType type) {
         return AccountTransfer.of(
                 Id.of(t.getId()),
-                Id.of(t.getFromAccount().getId()),
-                Amount.of(t.getAmount()),
+                type,
+                Money.of(t.getAmount(), Currency.of(t.getCurrency())),
                 t.getDescription(),
                 toLocalDateTime(t.getCreatedAt()));
     }

@@ -8,6 +8,6 @@ import java.util.List;
 public interface TransferRepository {
     Transfer saveTransfer(final Transfer transfer);
 
-    List<AccountTransfer> getLastTransfersFor(final String accountId, final Long offset, final Long limit);
+    List<AccountTransfer> getTransfersBy(final String accountId);
 
 }

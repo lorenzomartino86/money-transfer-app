@@ -13,6 +13,7 @@ public class MakeTransferDto {
     private String fromAccountId;
     private String toAccountId;
     private BigDecimal amount;
+    private String currency;
     private String description;
 
 }

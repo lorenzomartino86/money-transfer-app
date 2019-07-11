@@ -13,8 +13,9 @@ public class TransferDto {
     private String id;
     private String fromAccountId;
     private String toAccountId;
-    private String description;
     private BigDecimal amount;
+    private String currency;
+    private String description;
     private String createdAt;
 
     private TransferDto(final String id,
@@ -22,11 +23,13 @@ public class TransferDto {
                         final String toAccountId,
                         final String description,
                         final BigDecimal amount,
+                        final String currency,
                         final String createdAt){
         this.id = id;
         this.fromAccountId = fromAccountId;
         this.toAccountId = toAccountId;
         this.description = description;
+        this.currency = currency;
         this.amount = amount;
         this.createdAt = createdAt;
     }
@@ -35,9 +38,12 @@ public class TransferDto {
                                  final String fromAccountId,
                                  final String toAccountId,
                                  final String description,
+                                 final String currency,
                                  final BigDecimal amount,
                                  final LocalDateTime createdAt){
-        return new TransferDto(id, fromAccountId, toAccountId, description, amount, createdAt.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+        return new TransferDto(id, fromAccountId,
+                toAccountId, description, amount, currency,
+                createdAt.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
     }
 
 }

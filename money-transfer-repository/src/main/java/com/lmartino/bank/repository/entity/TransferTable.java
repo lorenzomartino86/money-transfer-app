@@ -25,6 +25,9 @@ public class TransferTable {
     private String description;
 
     @DatabaseField(canBeNull = false)
+    private String currency;
+
+    @DatabaseField(canBeNull = false)
     private BigDecimal amount;
 
     @DatabaseField(canBeNull = false)

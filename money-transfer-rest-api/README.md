@@ -16,7 +16,7 @@ Following RestFul resources are managed:
     
     | Field | Description | Type |
     | --- | --- | --- |
-    | name | Account name | String |
+    | name | Unique Account name | String |
     | balance | Account available balance | decimal |
     | currency | Account currency (ISO code) | String |    
     
@@ -109,8 +109,8 @@ Following RestFul resources are managed:
     | --- | --- | --- |
     | fromAccountId | Source Account UUID | String |
     | toAccountId | Target Account UUID | String |
-    | amount | The amount to transfer | Decimal |
-    | currency | Account currency (ISO code) | String |    
+    | money | The money to transfer | Decimal |
+    | currency | Account currency (ISO code). It should be the same currency of the source account. | String |    
     | description | Transfer notes | String |    
     
    The response will be:
@@ -120,7 +120,7 @@ Following RestFul resources are managed:
     | id | Transfer unique identifier (UUID) | String |
     | fromAccountId | Source Account UUID | String |
     | toAccountId | Target Account UUID | String |
-    | amount | The amount to transfer | Decimal |
+    | money | The money to transfer | Decimal |
     | currency | Transfer currency (ISO code) | String |    
     | description | Transfer notes | String |  
     | createdAt | Creation date time (YYYY-MM-DD'T'hh:mm:ss) | String |
@@ -129,7 +129,7 @@ Following RestFul resources are managed:
      
     `curl --header "Content-Type: application/json" \
             --request POST \
-            --data '{"fromAccountId":"b1b0f31a-a9e4-4f84-9b3d-d6ffa069ad2d","toAccountId":"3b4aa8de-30c4-4156-8129-4f20b2acb5e0","amount": 50.0 , "currency": "GBP", "description": "Test Bank Transfer"}' \
+            --data '{"fromAccountId":"b1b0f31a-a9e4-4f84-9b3d-d6ffa069ad2d","toAccountId":"3b4aa8de-30c4-4156-8129-4f20b2acb5e0","money": 50.0 , "currency": "GBP", "description": "Test Bank Transfer"}' \
             http://localhost:8080/api/transfers`
 
           
@@ -138,7 +138,7 @@ Following RestFul resources are managed:
                 "fromAccountId": "b1b0f31a-a9e4-4f84-9b3d-d6ffa069ad2d",
                 "toAccountId": "3b4aa8de-30c4-4156-8129-4f20b2acb5e0",
                 "description": "Test bank transfer",
-                "amount": 50,
+                "money": 50,
                 "currency": "GBP",
                 "createdAt": "2019-07-11T10:35:11"
         }
@@ -154,7 +154,7 @@ Following RestFul resources are managed:
     | --- | --- | --- |
     | id | Transfer unique identifier (UUID) | String |
     | type | Operation type: WITHDRAW or DEPOSIT | String |
-    | amount | Transfer amount | decimal |
+    | money | Transfer money | decimal |
     | currency | Transfer currency (ISO code) | String |
     | description | Transfer notes | String |
     | createdAt | Creation date time (YYYY-MM-DD'T'hh:mm:ss) | String |
@@ -167,7 +167,7 @@ Following RestFul resources are managed:
                 {
                     "id": "bfaf519f-d208-4dab-919a-0df18da8ef56",
                     "type": "WITHDRAW",
-                    "amount": 50,
+                    "money": 50,
                     "currency": "GBP",
                     "description": "Test withdraw transfer",
                     "createdAt": "2019-07-11T10:35:11"
@@ -175,7 +175,7 @@ Following RestFul resources are managed:
                 {
                     "id": "bfaf519f-d208-4dab-919a-0df18da8ef12",
                     "type": "DEPOSIT",
-                    "amount": 50,
+                    "money": 50,
                     "currency": "GBP",
                     "description": "Test deposit transfer",
                     "createdAt": "2019-07-12T10:35:11"
@@ -194,7 +194,7 @@ Following RestFul resources are managed:
     | id | Transfer unique identifier (UUID) | String |
     | fromAccountId | Source Account UUID | String |
     | toAccountId | Target Account UUID | String |
-    | amount | The amount to transfer | Decimal |
+    | money | The money to transfer | Decimal |
     | currency | Transfer currency (ISO code) | String |    
     | description | Transfer notes | String |  
     | createdAt | Creation date time (YYYY-MM-DD'T'hh:mm:ss) | String |
@@ -208,7 +208,7 @@ Following RestFul resources are managed:
                 "fromAccountId": "b1b0f31a-a9e4-4f84-9b3d-d6ffa069ad2d",
                 "toAccountId": "3b4aa8de-30c4-4156-8129-4f20b2acb5e0",
                 "description": "Test bank transfer",
-                "amount": 50,
+                "money": 50,
                 "currency": "GBP",
                 "createdAt": "2019-07-11T10:35:11"
             }

@@ -14,4 +14,5 @@ public interface AccountRepository {
 
     List<Account> getAllAccounts();
 
+    Optional<Account> getAccountByName(final String accountName);
 }

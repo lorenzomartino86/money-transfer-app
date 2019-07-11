@@ -66,9 +66,9 @@ public class TransferBetweenTwoAccountsSteps {
 
     }
 
-    @When("^user makes transfer of (.*) with note (.*)$")
-    public void user_makes_transfer_between_accounts_with_note(BigDecimal amount, String description) throws Throwable {
-        MakeTransferDto makeTransferDto = new MakeTransferDto(fromAccount.getId(), toAccount.getId(), amount, description);
+    @When("^user makes transfer of (.*) in currency (.*) with note (.*)$")
+    public void user_makes_transfer_between_accounts_with_note(BigDecimal amount, String currency, String description) throws Throwable {
+        MakeTransferDto makeTransferDto = new MakeTransferDto(fromAccount.getId(), toAccount.getId(), amount, currency, description);
         final String payload = new Gson().toJson(makeTransferDto);
         response = given()
                 .contentType(ContentType.JSON)

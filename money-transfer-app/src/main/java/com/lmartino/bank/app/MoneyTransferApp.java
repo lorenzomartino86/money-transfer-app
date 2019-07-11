@@ -12,7 +12,6 @@ import com.lmartino.bank.app.config.RepositoryModule;
 import com.lmartino.bank.app.config.RestApiModule;
 import com.lmartino.bank.app.exception.MoneyTransferAppInitException;
 import com.lmartino.bank.domain.adapter.ExchangeRateRepository;
-import com.lmartino.bank.domain.model.Amount;
 import com.lmartino.bank.domain.model.Currency;
 import com.lmartino.bank.domain.model.ExchangeRate;
 import com.lmartino.bank.repository.entity.AccountTable;
@@ -72,10 +71,10 @@ public class MoneyTransferApp{
             TableUtils.createTableIfNotExists(datasource, TransferTable.class);
             TableUtils.createTableIfNotExists(datasource, ExchangeRateTable.class);
             // Initialize exchange rates repository
-            ExchangeRate eurusd = ExchangeRate.create(Currency.of("EUR"), Currency.of("USD"), Amount.of(BigDecimal.valueOf(1.12077)));
-            ExchangeRate usdeur = ExchangeRate.create(Currency.of("USD"), Currency.of("EUR"), Amount.of(BigDecimal.valueOf(0.89224)));
-            ExchangeRate gbpeur = ExchangeRate.create(Currency.of("GBP"), Currency.of("EUR"), Amount.of(BigDecimal.valueOf(1.11210)));
-            ExchangeRate eurgbp = ExchangeRate.create(Currency.of("EUR"), Currency.of("GBP"), Amount.of(BigDecimal.valueOf(0.89919)));
+            ExchangeRate eurusd = ExchangeRate.create(Currency.of("EUR"), Currency.of("USD"), BigDecimal.valueOf(1.12077));
+            ExchangeRate usdeur = ExchangeRate.create(Currency.of("USD"), Currency.of("EUR"), BigDecimal.valueOf(0.89224));
+            ExchangeRate gbpeur = ExchangeRate.create(Currency.of("GBP"), Currency.of("EUR"), BigDecimal.valueOf(1.11210));
+            ExchangeRate eurgbp = ExchangeRate.create(Currency.of("EUR"), Currency.of("GBP"), BigDecimal.valueOf(0.89919));
             exchangeRateRepository.saveRates(eurusd, usdeur, gbpeur, eurgbp);
         } catch (SQLException e) {
             throw new MoneyTransferAppInitException(e);

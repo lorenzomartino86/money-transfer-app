@@ -9,6 +9,8 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
+import static com.lmartino.bank.domain.exception.DomainExceptionHandler.illegalTransferCurrencyException;
+
 @Getter
 @ToString
 @Log
@@ -17,14 +19,14 @@ public class Transfer {
     private Id id;
     private Account fromAccount;
     private Account toAccount;
-    private Amount amount;
+    private Money amount;
     private String description;
     private LocalDateTime createdAt;
 
     public Transfer(final Id id,
                     final Account fromAccount,
                     final Account toAccount,
-                    final Amount amount,
+                    final Money amount,
                     final String description,
                     final LocalDateTime createdAt) {
         this.id = id;
@@ -38,21 +40,25 @@ public class Transfer {
     public static Transfer of(final Id id,
                               final Account fromAccount,
                               final Account toAccount,
-                              final Amount amount,
+                              final Money money,
                               final String description,
                               final LocalDateTime createdAt){
-        return  new Transfer(id, fromAccount, toAccount, amount, description, createdAt);
+        return  new Transfer(id, fromAccount, toAccount, money, description, createdAt);
     }
 
     public static Transfer makeTransfer(final Account fromAccount,
                                         final Account toAccount,
-                                        final Amount amount,
+                                        final Money transferAmount,
                                         final String description,
                                         final BigDecimal rate){
-        fromAccount.withdraw(amount);
-        toAccount.deposit(amount.applyRate(rate));
+        if (!fromAccount.hasSameCurrency(transferAmount.getCurrency()))
+            illegalTransferCurrencyException(transferAmount.getCurrency(), fromAccount.getBalance().getCurrency());
+
+        fromAccount.withdraw(transferAmount);
+        toAccount.deposit(transferAmount.applyRate(rate));
+
         LocalDateTime createdAt = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
-        Transfer transfer = new Transfer(Id.create(), fromAccount, toAccount, amount, description, createdAt);
+        Transfer transfer = new Transfer(Id.create(), fromAccount, toAccount, transferAmount, description, createdAt);
         log.info(String.format("Created transfer %s", transfer));
         return transfer;
     }

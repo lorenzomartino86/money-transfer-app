@@ -23,7 +23,7 @@ public class GetAccountTransfersUseCase {
     public List<AccountTransfer> compose(final String accountId){
         Optional<Account> optionalAccount = accountRepository.getAccountBy(accountId);
         if (optionalAccount.isEmpty()) unkownAccountException(accountId);
-        return transferRepository.getLastTransfersFor(accountId, 0L, 10L);
+        return transferRepository.getTransfersBy(accountId);
     }
 
 }

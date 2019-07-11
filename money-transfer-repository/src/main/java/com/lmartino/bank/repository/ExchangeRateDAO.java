@@ -4,7 +4,6 @@ import com.j256.ormlite.dao.BaseDaoImpl;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
 import com.lmartino.bank.domain.adapter.ExchangeRateRepository;
-import com.lmartino.bank.domain.model.Amount;
 import com.lmartino.bank.domain.model.Currency;
 import com.lmartino.bank.domain.model.ExchangeRate;
 import com.lmartino.bank.repository.entity.ExchangeRateTable;
@@ -56,7 +55,7 @@ public class ExchangeRateDAO extends BaseDaoImpl<ExchangeRateTable, String> impl
                 table.getId(),
                 Currency.of(table.getFromCurrency()),
                 Currency.of(table.getToCurrency()),
-                Amount.of(table.getRate())
+                table.getRate()
         );
     }
 
@@ -65,7 +64,7 @@ public class ExchangeRateDAO extends BaseDaoImpl<ExchangeRateTable, String> impl
         exchangeRateTable.setId(rate.getId().getValue());
         exchangeRateTable.setFromCurrency(rate.getFromCurrency().getValue());
         exchangeRateTable.setToCurrency(rate.getToCurrency().getValue());
-        exchangeRateTable.setRate(rate.getRate().getMoney());
+        exchangeRateTable.setRate(rate.getRate());
         return exchangeRateTable;
     }
 

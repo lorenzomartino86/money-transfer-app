@@ -4,8 +4,8 @@ import com.j256.ormlite.jdbc.JdbcPooledConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import com.lmartino.bank.domain.exception.UnprocessableTransferException;
 import com.lmartino.bank.domain.model.Account;
-import com.lmartino.bank.domain.model.Amount;
 import com.lmartino.bank.domain.model.Currency;
+import com.lmartino.bank.domain.model.Money;
 import com.lmartino.bank.domain.model.Transfer;
 import com.lmartino.bank.repository.entity.AccountTable;
 import com.lmartino.bank.repository.entity.TransferTable;
@@ -21,6 +21,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 
 public class TransferDAOTest {
+    private Currency eur = Currency.of("EUR");
     private AccountDAO accountDAO;
     private TransferDAO transferDAO;
     private JdbcPooledConnectionSource connectionSource;
@@ -39,19 +40,19 @@ public class TransferDAOTest {
         BigDecimal initialFooBalance = BigDecimal.valueOf(1250);
         BigDecimal initialBarBalance = BigDecimal.valueOf(321.99);
         BigDecimal transferAmount = BigDecimal.valueOf(450.50);
-        Account foo = accountDAO.saveAccount(Account.createNewAccount("Foo", Amount.of(initialFooBalance), Currency.of("EUR")));
-        Account bar = accountDAO.saveAccount(Account.createNewAccount("Bar", Amount.of(initialBarBalance), Currency.of("EUR")));
+        Account foo = accountDAO.saveAccount(Account.createNewAccount("Foo", Money.of(initialFooBalance, eur)));
+        Account bar = accountDAO.saveAccount(Account.createNewAccount("Bar", Money.of(initialBarBalance, eur)));
 
-        Transfer requestedTransfer = Transfer.makeTransfer(foo, bar, Amount.of(transferAmount), "Robbing from rich and giving to the poor", BigDecimal.ONE);
+        Transfer requestedTransfer = Transfer.makeTransfer(foo, bar, Money.of(transferAmount, eur), "Robbing from rich and giving to the poor", BigDecimal.ONE);
         Transfer createdTransfer = transferDAO.saveTransfer(requestedTransfer);
         Assert.assertThat(createdTransfer, is(notNullValue()));
         Assert.assertThat(createdTransfer, is(requestedTransfer));
 
         Optional<Account> updatedFoo = accountDAO.getAccountBy(foo.getId().getValue());
-        Assert.assertThat(updatedFoo.get().getBalance(), is(Amount.of(initialFooBalance.subtract(transferAmount))));
+        Assert.assertThat(updatedFoo.get().getBalance(), is(Money.of(initialFooBalance.subtract(transferAmount), eur)));
 
         Optional<Account> updatedBar = accountDAO.getAccountBy(bar.getId().getValue());
-        Assert.assertThat(updatedBar.get().getBalance(), is(Amount.of(initialBarBalance.add(transferAmount))));
+        Assert.assertThat(updatedBar.get().getBalance(), is(Money.of(initialBarBalance.add(transferAmount), eur)));
 
     }
 
@@ -61,10 +62,10 @@ public class TransferDAOTest {
         BigDecimal initialFooBalance = BigDecimal.valueOf(1250);
         BigDecimal initialBarBalance = BigDecimal.valueOf(321.99);
         BigDecimal transferAmount = BigDecimal.valueOf(450.50);
-        Account foo = accountDAO.saveAccount(Account.createNewAccount("Foo", Amount.of(initialFooBalance), Currency.of("EUR")));
-        Account bar = accountDAO.saveAccount(Account.createNewAccount("Bar", Amount.of(initialBarBalance), Currency.of("EUR")));
+        Account foo = accountDAO.saveAccount(Account.createNewAccount("Foo", Money.of(initialFooBalance, eur)));
+        Account bar = accountDAO.saveAccount(Account.createNewAccount("Bar", Money.of(initialBarBalance, eur)));
 
-        Transfer requestedTransfer = Transfer.makeTransfer(foo, bar, Amount.of(transferAmount), "Robbing from rich and giving to the poor", BigDecimal.ONE);
+        Transfer requestedTransfer = Transfer.makeTransfer(foo, bar, Money.of(transferAmount, eur), "Robbing from rich and giving to the poor", BigDecimal.ONE);
 
         try{
             // Dropping transfer table at runtime to simulate a failure during the save transfer transaction
@@ -75,10 +76,10 @@ public class TransferDAOTest {
             // Checking that rollback has restored initial balance in account foo and bar
 
             Optional<Account> updatedFoo = accountDAO.getAccountBy(foo.getId().getValue());
-            Assert.assertThat(updatedFoo.get().getBalance(), is(Amount.of(initialFooBalance)));
+            Assert.assertThat(updatedFoo.get().getBalance(), is(Money.of(initialFooBalance, eur)));
 
             Optional<Account> updatedBar = accountDAO.getAccountBy(bar.getId().getValue());
-            Assert.assertThat(updatedBar.get().getBalance(), is(Amount.of(initialBarBalance)));
+            Assert.assertThat(updatedBar.get().getBalance(), is(Money.of(initialBarBalance, eur)));
         }
 
     }

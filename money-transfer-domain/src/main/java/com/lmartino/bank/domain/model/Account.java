@@ -20,54 +20,53 @@ import static com.lmartino.bank.domain.exception.DomainExceptionHandler.insuffic
 public class Account {
     private Id id;
     private String name;
-    private Amount balance;
+    private Money balance;
     private LocalDateTime createdAt;
-    private Currency currency;
-    private AccountTransfer[] transfers;
 
     private Account(final Id id,
                     final String name,
-                    final Amount balance,
-                    final LocalDateTime createdAt,
-                    final Currency currency,
-                    final AccountTransfer[] transfers) {
+                    final Money balance,
+                    final LocalDateTime createdAt) {
         this.id = id;
         this.name = name;
         this.balance = balance;
         this.createdAt = createdAt;
-        this.currency = currency;
-        this.transfers = transfers;
     }
 
     public static Account of(final Id id,
                              final String name,
-                             final Amount balance,
-                             final LocalDateTime createdAt,
-                             final Currency currency,
-                             final AccountTransfer ... transfers) {
-        return new Account(id, name, balance, createdAt, currency, transfers);
+                             final Money balance,
+                             final LocalDateTime createdAt) {
+        return new Account(id, name, balance, createdAt);
     }
 
-    public static Account createNewAccount(final String name, final Amount balance, final Currency currency) {
+    public static Account createNewAccount(final String name, final Money balance) {
         LocalDateTime now = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
-        Account account = new Account(Id.create(), name, balance, now, currency, new AccountTransfer[]{});
+        Account account = new Account(Id.create(), name, balance, now);
         log.info(String.format("Created new account %s", account));
         return account;
     }
 
-    public void withdraw(Amount amount) {
-        if (this.balance.isGreaterThan(amount))
-            this.balance.decreaseBy(amount);
+    public void withdraw(Money money) {
+        if (this.balance.isGreaterThan(money))
+            this.balance.decreaseBy(money);
         else
             insufficientBalanceException(this.id.getValue());
     }
 
-    public void deposit(Amount amount) {
-        this.balance.increaseBy(amount);
+    public void deposit(Money money) {
+        this.balance.increaseBy(money);
     }
 
     public boolean hasSameCurrency(Account other){
-        return this.currency.getValue().equals(other.getCurrency().getValue());
+        return this.balance.getCurrency().getValue().equals(other.getBalance().getCurrency().getValue());
     }
 
+    public Currency getCurrency(){
+        return balance.getCurrency();
+    }
+
+    public boolean hasSameCurrency(Currency currency) {
+        return balance.getCurrency().equals(currency);
+    }
 }
