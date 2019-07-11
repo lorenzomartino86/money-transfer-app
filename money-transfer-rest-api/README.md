@@ -1,5 +1,5 @@
-
-
+# Rest Api Module
+This module has the responsibility to expose and handle rest requests.
 
 ## API Design
 Following RestFul resources are managed:

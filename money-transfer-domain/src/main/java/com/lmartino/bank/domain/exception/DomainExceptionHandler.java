@@ -24,7 +24,7 @@ public final class DomainExceptionHandler {
     }
 
     public static void illegalTransferCurrencyException(final Currency transferCurrency, final Currency validCurrency){
-        throw new UnknownCurrencyCodeException(String.format("Cannot process the transfer with currency %s. " +
+        throw new IllegalTransferCurrencyException(String.format("Cannot process the transfer with currency %s. " +
                 "Only currency %s is allowed from the source account.", transferCurrency.getValue(), validCurrency.getValue()));
     }
 

@@ -8,4 +8,5 @@
 See the [api documentation](money-transfer-rest-api/README.md)
 
 ### Domain Design
+See the [domain documentation](money-transfer-domain/README.md)
 
