@@ -96,7 +96,7 @@ public class MoneyTransferApp{
         return instance.getInstance(MoneyTransferApp.class);
     }
 
-    public static void main(final String... args) throws SQLException {
+    public static void main(final String... args) {
         MoneyTransferApp app = init();
         app.start();
     }

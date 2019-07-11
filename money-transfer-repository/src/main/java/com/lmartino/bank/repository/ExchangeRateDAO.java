@@ -7,6 +7,7 @@ import com.lmartino.bank.domain.adapter.ExchangeRateRepository;
 import com.lmartino.bank.domain.model.Currency;
 import com.lmartino.bank.domain.model.ExchangeRate;
 import com.lmartino.bank.repository.entity.ExchangeRateTable;
+import com.lmartino.bank.repository.exception.RepositoryException;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -28,14 +29,13 @@ public class ExchangeRateDAO extends BaseDaoImpl<ExchangeRateTable, String> impl
                     .and()
                     .eq("toCurrency", toCurrency);
             List<ExchangeRateTable> rates = queryBuilder.query();
-            System.out.println(super.queryForAll());
             if (rates.isEmpty()){
                 return Optional.empty();
             }
             ExchangeRateTable exchangeRateTable = rates.get(0);
             return Optional.of(toDomainModel(exchangeRateTable));
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RepositoryException(e);
         }
     }
 
@@ -46,7 +46,7 @@ public class ExchangeRateDAO extends BaseDaoImpl<ExchangeRateTable, String> impl
         try {
             super.create(collectionOfRates);
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RepositoryException(e);
         }
     }
 

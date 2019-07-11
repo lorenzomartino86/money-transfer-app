@@ -27,8 +27,8 @@ public class AccountDAO extends BaseDaoImpl<AccountTable, String> implements Acc
     @Override
     public Account saveAccount(Account account) {
         try {
-            AccountTable accountTable = saveAccountTable(account);
-            return getAccountBy(accountTable.getId()).get();
+            saveAccountTable(account);
+            return account;
         } catch (SQLException e) {
             throw new RepositoryException(e);
         }
@@ -37,8 +37,8 @@ public class AccountDAO extends BaseDaoImpl<AccountTable, String> implements Acc
     @Override
     public Account updateAccount(Account account) {
         try {
-            AccountTable accountTable = updateAccountTable(account);
-            return getAccountBy(accountTable.getId()).get();
+            updateAccountTable(account);
+            return account;
         } catch (SQLException e) {
             throw new RepositoryException(e);
         }

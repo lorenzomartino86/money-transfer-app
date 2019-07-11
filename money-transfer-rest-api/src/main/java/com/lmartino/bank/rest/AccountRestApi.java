@@ -25,6 +25,7 @@ public class AccountRestApi implements RestApi{
     private CreateAccountUseCase createAccountUseCase;
     private GetAccountUseCase getAccountUseCase;
     private GetAccountTransfersUseCase getAccountTransfersUseCase;
+    private static final String APPLICATION_JSON = "application/json";
 
     @Inject
     public AccountRestApi(final CreateAccountUseCase createAccountUseCase,
@@ -38,7 +39,7 @@ public class AccountRestApi implements RestApi{
     public void init(){
 
         post("/api/accounts", (request, response) -> {
-            response.type("application/json");
+            response.type(APPLICATION_JSON);
             CreateAccountDto account = new Gson().fromJson(request.body(), CreateAccountDto.class);
             Account createdAccount = createAccountUseCase.compose(account.getName(), account.getBalance(), account.getCurrency());
             AccountDto createdAccountDto = DtoConverter.accountDto(createdAccount);
@@ -47,20 +48,20 @@ public class AccountRestApi implements RestApi{
         });
 
         get("/api/accounts/:id", (request, response) -> {
-            response.type("application/json");
+            response.type(APPLICATION_JSON);
             Account account = getAccountUseCase.compose(request.params(":id"));
             AccountDto accountDto = DtoConverter.accountDto(account);
             return new Gson().toJson(accountDto);
         });
 
         get("/api/accounts/:id/transfers", (request, response) -> {
-            response.type("application/json");
+            response.type(APPLICATION_JSON);
             List<AccountTransfer> transfers = getAccountTransfersUseCase.compose(request.params(":id"));
             return new Gson().toJson(transfers.stream().map(DtoConverter::accountTransferDto).collect(Collectors.toList()));
         });
 
         get("/api/accounts", (request, response) -> {
-            response.type("application/json");
+            response.type(APPLICATION_JSON);
             List<Account> accounts = getAccountUseCase.compose();
             List<AccountDto> accountDtos = accounts.stream().map(DtoConverter::accountDto).collect(Collectors.toList());
             return new Gson().toJson(accountDtos);

@@ -2,9 +2,12 @@ package com.lmartino.bank.domain.exception;
 
 import com.lmartino.bank.domain.model.Currency;
 import com.lmartino.bank.domain.model.Transfer;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 import static java.lang.String.format;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class DomainExceptionHandler {
 
     public static void unkownAccountException(final String accountId){

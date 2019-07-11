@@ -7,7 +7,10 @@ import com.lmartino.bank.domain.adapter.AccountRepository;
 import com.lmartino.bank.domain.adapter.TransferRepository;
 import com.lmartino.bank.domain.model.*;
 import com.lmartino.bank.repository.entity.TransferTable;
+import com.lmartino.bank.repository.exception.RepositoryException;
 import lombok.extern.java.Log;
+import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 
 import java.sql.SQLException;
 import java.util.Comparator;
@@ -21,7 +24,7 @@ import static com.lmartino.bank.repository.converter.DateTimeConverter.toDate;
 import static com.lmartino.bank.repository.converter.DateTimeConverter.toLocalDateTime;
 import static com.lmartino.bank.repository.converter.TableConverter.toAccountTable;
 
-@Log
+@Slf4j
 public class TransferDAO extends BaseDaoImpl<TransferTable, String> implements TransferRepository {
     private AccountRepository accountRepository;
 
@@ -59,7 +62,7 @@ public class TransferDAO extends BaseDaoImpl<TransferTable, String> implements T
             return transfer;
 
         } catch (SQLException e) {
-            log.info(e.getMessage());
+            log.error("Error during transfer", e);
             unprocessableTransferException(transfer);
             return null;
         }
@@ -82,8 +85,8 @@ public class TransferDAO extends BaseDaoImpl<TransferTable, String> implements T
                     .collect(Collectors.toList());
 
         } catch (SQLException e) {
-            log.info(e.getMessage());
-            throw new RuntimeException(e);
+            log.error("Error getting transfer by account id", e);
+            throw new RepositoryException(e);
         }
     }
 

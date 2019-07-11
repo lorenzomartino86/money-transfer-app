@@ -20,8 +20,7 @@ public class RepositoryModule extends AbstractModule {
 
     @Provides @Singleton @Named("jdbcPooledConnectionSource")
     JdbcPooledConnectionSource jdbcPooledConnectionSource() throws SQLException {
-        JdbcPooledConnectionSource connectionSource = new JdbcPooledConnectionSource("jdbc:h2:mem:bank;DB_CLOSE_DELAY=-1");
-        return connectionSource;
+        return new JdbcPooledConnectionSource("jdbc:h2:mem:bank;DB_CLOSE_DELAY=-1");
     }
 
     @Provides @Singleton @Named("accountRepository")

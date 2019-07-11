@@ -6,7 +6,10 @@ import com.lmartino.bank.domain.model.Transfer;
 import com.lmartino.bank.rest.dto.AccountDto;
 import com.lmartino.bank.rest.dto.AccountTransferDto;
 import com.lmartino.bank.rest.dto.TransferDto;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class DtoConverter {
 
     public static TransferDto transferDto(final Transfer transfer){

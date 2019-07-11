@@ -5,10 +5,13 @@ import com.lmartino.bank.domain.model.Currency;
 import com.lmartino.bank.domain.model.Id;
 import com.lmartino.bank.domain.model.Money;
 import com.lmartino.bank.repository.entity.AccountTable;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 import static com.lmartino.bank.repository.converter.DateTimeConverter.toDate;
 import static com.lmartino.bank.repository.converter.DateTimeConverter.toLocalDateTime;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class TableConverter {
 
     public static AccountTable toAccountTable(Account account) {
