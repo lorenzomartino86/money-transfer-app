@@ -62,7 +62,7 @@ public class Transfer {
 
         fromAccount.withdraw(withdrawAmount);
 
-        Money depositAmount = withdrawAmount.applyRate(rate);
+        Money depositAmount = withdrawAmount.applyRate(rate, toAccount.getCurrency());
         toAccount.deposit(depositAmount);
 
         LocalDateTime createdAt = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);

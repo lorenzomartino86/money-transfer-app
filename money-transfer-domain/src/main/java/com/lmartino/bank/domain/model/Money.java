@@ -42,7 +42,7 @@ public class Money {
         return other.getCurrency().getValue().equals(currency.getValue());
     }
 
-    public Money applyRate(final BigDecimal rate){
+    public Money applyRate(final BigDecimal rate, final Currency currency){
         return Money.of(value.multiply(rate), currency);
     }
 

@@ -51,14 +51,14 @@ public class MoneyTest {
     public void canApplyIdentityRateOnAmount(){
         BigDecimal value = BigDecimal.valueOf(12.99);
         Money money = Money.of(value, eur);
-        Assert.assertThat(money.applyRate(BigDecimal.ONE).getValue(), is(value));
+        Assert.assertThat(money.applyRate(BigDecimal.ONE, eur).getValue(), is(value));
     }
 
     @Test
     public void canApplyRateOnAmount(){
         BigDecimal value = BigDecimal.ONE;
         Money money = Money.of(value, eur);
-        Assert.assertThat(money.applyRate(BigDecimal.valueOf(0.89919)).getValue().doubleValue(), is(0.90));
+        Assert.assertThat(money.applyRate(BigDecimal.valueOf(0.89919), eur).getValue().doubleValue(), is(0.90));
     }
 
 }
