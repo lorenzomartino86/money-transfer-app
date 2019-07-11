@@ -9,9 +9,9 @@ Feature: Users can make transfer from one account into another
     And target account has balance <targetBalance> increased by <transfer>
 
   Examples:
-  | sourceAccount | sourceBalance | targetAccount | targetBalance | transfer | currency | description |
-  | Foo           | 123.99        | bar           | 22.01         | 51.99    | EUR      | Transfer 1  |
-  | Weird Account | 20            | Lucky One     | 0.01          | 19.99    | EUR      | Transfer 2  |
+  | sourceAccount   | sourceBalance | targetAccount | targetBalance | transfer | currency | description |
+  | Mickey Mouse    | 123.99        | Goofy         | 22.01         | 51.99    | EUR      | Transfer 1  |
+  | Duffy Duck      | 20            | Bugs Bunny    | 0.01          | 19.99    | EUR      | Transfer 2  |
 
   Scenario Outline: User cannot make a money transfer between accounts when balance is not enough
     Given account <sourceAccount> with balance <sourceBalance>
@@ -23,5 +23,5 @@ Feature: Users can make transfer from one account into another
 
   Examples:
   | sourceAccount | sourceBalance | targetAccount | targetBalance | transfer | currency | description |
-  | Foo           | 123.99        | bar           | 22.01         | 1000.99  | EUR      | Transfer 1  |
-  | Weird Account | 20            | Lucky One     | 0.01          | 20.01    | EUR      | Transfer 2  |
+  | Donald Duck   | 123.99        | Daisy Duck    | 22.01         | 1000.99  | EUR      | Transfer 1  |
+  | Rick Grimes   | 20            | Shane         | 0.01          | 20.01    | EUR      | Transfer 2  |

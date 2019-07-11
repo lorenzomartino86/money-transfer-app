@@ -73,7 +73,16 @@ public class AccountDAO extends BaseDaoImpl<AccountTable, String> implements Acc
 
     @Override
     public Optional<Account> getAccountByName(String accountName) {
-        return Optional.empty();
+        try {
+            List<AccountTable> accountTableList = super.queryForEq("name", accountName);
+            if (accountTableList.isEmpty()){
+                return Optional.empty();
+            } else {
+                return Optional.of(toDomainModel(accountTableList.get(0)));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     protected AccountTable saveAccountTable(Account account) throws SQLException {

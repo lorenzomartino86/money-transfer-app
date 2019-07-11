@@ -11,6 +11,8 @@ import org.junit.Test;
 
 import java.math.BigDecimal;
 
+import static org.junit.Assert.*;
+
 public class DtoConverterTest {
 
     @Test
@@ -30,5 +32,4 @@ public class DtoConverterTest {
         Assert.assertThat(transfer.getCreatedAt(), CoreMatchers.is(transfer.getCreatedAt()));
 
     }
-
 }

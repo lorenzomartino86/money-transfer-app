@@ -2,6 +2,7 @@ package com.lmartino.bank.bdd.steps;
 
 import com.google.gson.Gson;
 import com.lmartino.bank.app.MoneyTransferApp;
+import com.lmartino.bank.repository.AccountDAO;
 import com.lmartino.bank.rest.dto.AccountDto;
 import com.lmartino.bank.rest.dto.CreateAccountDto;
 import cucumber.api.java.After;
@@ -10,6 +11,9 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import io.restassured.http.ContentType;
+import io.restassured.response.ExtractableResponse;
+import io.restassured.response.Response;
+import io.restassured.response.ValidatableResponse;
 import org.junit.Assert;
 
 import java.math.BigDecimal;
@@ -25,6 +29,7 @@ public class AccountSteps {
     private AccountDto responseBody;
 
     private static MoneyTransferApp app;
+    private Response response;
 
     @Before
     public void setUp() {
@@ -63,8 +68,7 @@ public class AccountSteps {
                 .post("/api/accounts")
                 .then()
                 .statusCode(201)
-                .extract()
-                .as(AccountDto.class);
+                .extract().as(AccountDto.class);
     }
 
     @Then("^account is created$")
@@ -90,6 +94,36 @@ public class AccountSteps {
     @Then("^account currency is (.*)$")
     public void account_currency_is(String currency) throws Throwable {
         Assert.assertThat(responseBody.getCurrency(), is(currency));
+    }
+
+    @Given("^account with name (.*) balance (.*) and currency (.*)$")
+    public void account_with_name_balance_and_currency(String accountName, BigDecimal balance, String currency) {
+        CreateAccountDto createAccountDto = new CreateAccountDto(accountName, balance, currency);
+        final String payload = new Gson().toJson(createAccountDto);
+        given()
+                .contentType(ContentType.JSON)
+                .body(payload)
+                .post("/api/accounts")
+                .then()
+                .statusCode(201)
+                .extract()
+                .as(AccountDto.class);
+    }
+
+
+    @When("^user create account with name (.*) balance (.*) and currency (.*)$")
+    public void user_create_account_with_name_balance_and_currency(String accountName, BigDecimal balance, String currency) {
+        CreateAccountDto createAccountDto = new CreateAccountDto(accountName, balance, currency);
+        final String payload = new Gson().toJson(createAccountDto);
+        response = given()
+                .contentType(ContentType.JSON)
+                .body(payload)
+                .post("/api/accounts");
+    }
+
+    @Then("^account creation is rejected with status code (.*)$")
+    public void account_creation_is_rejected(Integer statusCode) {
+        response.then().statusCode(statusCode);
     }
 
 }
