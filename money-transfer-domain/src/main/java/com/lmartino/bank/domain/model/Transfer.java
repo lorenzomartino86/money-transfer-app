@@ -1,6 +1,5 @@
 package com.lmartino.bank.domain.model;
 
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 import lombok.extern.java.Log;
@@ -14,7 +13,6 @@ import static com.lmartino.bank.domain.exception.DomainExceptionHandler.illegalT
 @Getter
 @ToString
 @Log
-@EqualsAndHashCode
 public class Transfer {
     private Id id;
     private Account fromAccount;

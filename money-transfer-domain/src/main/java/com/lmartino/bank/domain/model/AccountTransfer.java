@@ -1,8 +1,6 @@
 package com.lmartino.bank.domain.model;
 
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.ToString;
 import lombok.extern.java.Log;
 
 import java.time.LocalDateTime;
@@ -12,8 +10,6 @@ import java.time.LocalDateTime;
  */
 @Getter
 @Log
-@ToString
-@EqualsAndHashCode
 public class AccountTransfer {
     private Id id;
     private TransferType type;

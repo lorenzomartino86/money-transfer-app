@@ -22,6 +22,7 @@ public class AccountTransferTest {
         Assert.assertThat(accountTransfer.getType(), is(type));
         Assert.assertThat(accountTransfer.getDescription(), is(description));
         Assert.assertThat(accountTransfer.getMoney(), is(money));
+        Assert.assertThat(accountTransfer.getCreatedAt(), is(createdAt));
     }
 
 }
