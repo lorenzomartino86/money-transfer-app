@@ -28,8 +28,8 @@ import static spark.Spark.*;
 
 public class AccountRestApiTest {
     private CreateAccountUseCase mockCreateAccountUseCase = createNiceMock(CreateAccountUseCase.class);
-    final GetAccountUseCase mockGetAccountUseCase = createNiceMock(GetAccountUseCase.class);
-    final GetAccountTransfersUseCase mockGetAccountTransfersUseCase = createNiceMock(GetAccountTransfersUseCase.class);
+    private GetAccountUseCase mockGetAccountUseCase = createNiceMock(GetAccountUseCase.class);
+    private GetAccountTransfersUseCase mockGetAccountTransfersUseCase = createNiceMock(GetAccountTransfersUseCase.class);
     private AccountRestApi api = new AccountRestApi(mockCreateAccountUseCase, mockGetAccountUseCase, mockGetAccountTransfersUseCase);
 
 
