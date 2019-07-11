@@ -4,12 +4,14 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
 @Getter
 @Setter
+@ToString
 @DatabaseTable(tableName = "transfer")
 public class TransferTable {
     @DatabaseField(canBeNull = false, id = true)

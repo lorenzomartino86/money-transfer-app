@@ -68,7 +68,8 @@ public class Transfer {
         toAccount.deposit(depositAmount);
 
         LocalDateTime createdAt = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
-        Transfer transfer = new Transfer(Id.create(), fromAccount, toAccount, withdrawAmount, depositAmount, rate, description, createdAt);
+        Transfer transfer = new Transfer(Id.create(), fromAccount, toAccount,
+                withdrawAmount, depositAmount, rate, description, createdAt);
         log.info(String.format("Created transfer %s", transfer));
         return transfer;
     }
