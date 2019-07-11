@@ -6,6 +6,7 @@ import com.lmartino.bank.domain.exception.UnprocessableTransferException;
 import com.lmartino.bank.domain.model.*;
 import com.lmartino.bank.repository.entity.AccountTable;
 import com.lmartino.bank.repository.entity.TransferTable;
+import com.lmartino.bank.repository.exception.RepositoryException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -56,6 +57,29 @@ public class TransferDAOTest {
 
     }
 
+
+    @Test(expected = UnprocessableTransferException.class)
+    public void transferIsNotSavedIfSomethingBadHappenDuringTransaction() throws SQLException {
+        BigDecimal initialFooBalance = BigDecimal.valueOf(1250);
+        BigDecimal initialBarBalance = BigDecimal.valueOf(321.99);
+        BigDecimal transferAmount = BigDecimal.valueOf(450.50);
+        Account foo = accountDAO.saveAccount(Account.createNewAccount("Foo", Money.of(initialFooBalance, eur)));
+        Account bar = accountDAO.saveAccount(Account.createNewAccount("Bar", Money.of(initialBarBalance, eur)));
+
+        Transfer requestedTransfer = Transfer.makeTransfer(foo, bar, Money.of(transferAmount, eur), "Robbing from rich and giving to the poor", BigDecimal.ONE);
+
+        // Dropping transfer table at runtime to simulate a failure during the save transfer transaction
+        TableUtils.dropTable(connectionSource, TransferTable.class, false);
+        transferDAO.saveTransfer(requestedTransfer);
+
+    }
+
+    @Test(expected = RepositoryException.class)
+    public void transferIsNotRetrievedIfSomethingBadHappenDuringQuery() throws SQLException {
+        // Dropping transfer table at runtime to simulate a failure during the save transfer transaction
+        TableUtils.dropTable(connectionSource, TransferTable.class, false);
+        transferDAO.getTransfersBy("123");
+    }
 
     @Test
     public void accountBalanceIsRestoredIfMakeTransferTransactionFails() throws SQLException {

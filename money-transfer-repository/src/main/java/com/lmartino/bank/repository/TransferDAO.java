@@ -8,13 +8,12 @@ import com.lmartino.bank.domain.adapter.TransferRepository;
 import com.lmartino.bank.domain.model.*;
 import com.lmartino.bank.repository.entity.TransferTable;
 import com.lmartino.bank.repository.exception.RepositoryException;
-import lombok.extern.java.Log;
-import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
 
 import java.sql.SQLException;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.Callable;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
