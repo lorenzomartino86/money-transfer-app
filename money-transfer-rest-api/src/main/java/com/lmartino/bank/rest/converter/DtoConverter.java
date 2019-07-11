@@ -14,8 +14,8 @@ public final class DtoConverter {
                 transfer.getFromAccount().getId().getValue(),
                 transfer.getToAccount().getId().getValue(),
                 transfer.getDescription(),
-                transfer.getAmount().getCurrency().getValue(),
-                transfer.getAmount().getValue(),
+                transfer.getWithdrawAmount().getCurrency().getValue(),
+                transfer.getWithdrawAmount().getValue(),
                 transfer.getCreatedAt());
     }
 

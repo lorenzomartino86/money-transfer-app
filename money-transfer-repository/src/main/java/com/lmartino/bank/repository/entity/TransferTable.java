@@ -25,10 +25,19 @@ public class TransferTable {
     private String description;
 
     @DatabaseField(canBeNull = false)
-    private String currency;
+    private String withdrawCurrency;
 
     @DatabaseField(canBeNull = false)
-    private BigDecimal amount;
+    private BigDecimal withdrawAmount;
+
+    @DatabaseField(canBeNull = false)
+    private String depositCurrency;
+
+    @DatabaseField(canBeNull = false)
+    private BigDecimal depositAmount;
+
+    @DatabaseField(canBeNull = false)
+    private BigDecimal exchangeRate;
 
     @DatabaseField(canBeNull = false)
     private Date createdAt;

@@ -7,7 +7,6 @@ import com.j256.ormlite.support.ConnectionSource;
 import com.lmartino.bank.domain.adapter.AccountRepository;
 import com.lmartino.bank.domain.adapter.TransferRepository;
 import com.lmartino.bank.domain.model.*;
-import com.lmartino.bank.repository.converter.TableConverter;
 import com.lmartino.bank.repository.entity.TransferTable;
 import lombok.extern.java.Log;
 
@@ -45,8 +44,11 @@ public class TransferDAO extends BaseDaoImpl<TransferTable, String> implements T
 
                         TransferTable transferTable = new TransferTable();
                         transferTable.setId(transfer.getId().getValue());
-                        transferTable.setCurrency(transfer.getAmount().getCurrency().getValue());
-                        transferTable.setAmount(transfer.getAmount().getValue());
+                        transferTable.setDepositAmount(transfer.getDepositAmount().getValue());
+                        transferTable.setDepositCurrency(transfer.getToAccount().getCurrency().getValue());
+                        transferTable.setWithdrawAmount(transfer.getWithdrawAmount().getValue());
+                        transferTable.setWithdrawCurrency(transfer.getFromAccount().getCurrency().getValue());
+                        transferTable.setExchangeRate(transfer.getExchangeRate());
                         transferTable.setFromAccount(toAccountTable(fromAccount));
                         transferTable.setToAccount(toAccountTable(toAccount));
                         transferTable.setDescription(transfer.getDescription());
@@ -71,11 +73,11 @@ public class TransferDAO extends BaseDaoImpl<TransferTable, String> implements T
 
             List<TransferTable> withdrawTransfers = super.queryForEq("from_account_id", accountId);
             List<AccountTransfer> accountWithdraws = withdrawTransfers.stream()
-                    .map(w -> toAccountTransfer(w, TransferType.WITHDRAW)).collect(Collectors.toList());
+                    .map(this::withdraw).collect(Collectors.toList());
 
             List<TransferTable> depositTransfers = super.queryForEq("to_account_id", accountId);
             List<AccountTransfer> accountDeposits = depositTransfers.stream()
-                    .map(w -> toAccountTransfer(w, TransferType.DEPOSIT)).collect(Collectors.toList());
+                    .map(this::deposit).collect(Collectors.toList());
 
             return Stream.concat(accountWithdraws.stream(), accountDeposits.stream())
                     .sorted(Comparator.comparing(AccountTransfer::getCreatedAt))
@@ -87,21 +89,20 @@ public class TransferDAO extends BaseDaoImpl<TransferTable, String> implements T
         }
     }
 
-    private Transfer toDomainModel(TransferTable t) {
-        return Transfer.of(
+    private AccountTransfer withdraw(TransferTable t) {
+        return AccountTransfer.of(
                 Id.of(t.getId()),
-                TableConverter.toDomainModel(t.getFromAccount()),
-                TableConverter.toDomainModel(t.getToAccount()),
-                Money.of(t.getAmount(), Currency.of(t.getCurrency())),
+                TransferType.WITHDRAW,
+                Money.of(t.getWithdrawAmount(), Currency.of(t.getWithdrawCurrency())),
                 t.getDescription(),
                 toLocalDateTime(t.getCreatedAt()));
     }
 
-    private AccountTransfer toAccountTransfer(TransferTable t, TransferType type) {
+    private AccountTransfer deposit(TransferTable t) {
         return AccountTransfer.of(
                 Id.of(t.getId()),
-                type,
-                Money.of(t.getAmount(), Currency.of(t.getCurrency())),
+                TransferType.DEPOSIT,
+                Money.of(t.getDepositAmount(), Currency.of(t.getDepositCurrency())),
                 t.getDescription(),
                 toLocalDateTime(t.getCreatedAt()));
     }

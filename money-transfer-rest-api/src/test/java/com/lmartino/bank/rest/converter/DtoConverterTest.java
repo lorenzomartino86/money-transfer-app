@@ -26,8 +26,8 @@ public class DtoConverterTest {
 
         TransferDto transferDto = DtoConverter.transferDto(transfer);
         Assert.assertThat(transferDto, is(CoreMatchers.notNullValue()));
-        Assert.assertThat(transferDto.getAmount(), is(transfer.getAmount().getValue()));
-        Assert.assertThat(transferDto.getCurrency(), is(transfer.getAmount().getCurrency().getValue()));
+        Assert.assertThat(transferDto.getAmount(), is(transfer.getWithdrawAmount().getValue()));
+        Assert.assertThat(transferDto.getCurrency(), is(transfer.getWithdrawAmount().getCurrency().getValue()));
         Assert.assertThat(transferDto.getDescription(), is(transfer.getDescription()));
         Assert.assertThat(transferDto.getId(), is(transfer.getId().getValue()));
         Assert.assertThat(transferDto.getFromAccountId(), is(transfer.getFromAccount().getId().getValue()));
