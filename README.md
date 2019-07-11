@@ -4,11 +4,7 @@
 A Java RESTful API to handle money transfers between different accounts.
 
 ### Architecture
-- JAX-RS API
-- H2 in memory database
-- Log4j
-- Jetty Container (for Test and Demo app)
-- Apache HTTP Client
+
 
 
 ### Build Instructions

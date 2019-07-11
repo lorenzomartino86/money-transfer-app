@@ -1,6 +1,8 @@
 package com.lmartino.bank.rest;
 
 import com.google.gson.Gson;
+import com.lmartino.bank.domain.exception.IllegalTransferCurrencyException;
+import com.lmartino.bank.domain.exception.InsufficientBalanceException;
 import com.lmartino.bank.domain.model.Account;
 import com.lmartino.bank.domain.model.Currency;
 import com.lmartino.bank.domain.model.Money;
@@ -72,6 +74,75 @@ public class BankTransferRestApiTest {
         Assert.assertThat(transferDto.getDescription(), is(mockTransfer.getDescription()));
         Assert.assertThat(transferDto.getCurrency(), is(mockTransfer.getWithdrawAmount().getCurrency().getValue()));
         Assert.assertThat(transferDto.getAmount(), is(mockTransfer.getWithdrawAmount().getValue()));
+
+    }
+
+
+    @Test
+    public void cannotMakeTransferIfInsufficientBalance() {
+        MakeTransferDto dto = new MakeTransferDto("id1","id2",
+                BigDecimal.valueOf(12.99),"EUR","notes");
+
+        Account foo = Account.createNewAccount("foo", Money.of(BigDecimal.TEN, Currency.of("EUR")));
+        Account bar = Account.createNewAccount("bar", Money.of(BigDecimal.TEN, Currency.of("EUR")));
+        Transfer mockTransfer = Transfer.makeTransfer(foo, bar, Money.of(BigDecimal.ONE, Currency.of("EUR")), "notes", BigDecimal.ONE);
+        expect(mockMakeTransferUseCase.compose(EasyMock.anyString(), EasyMock.anyString(), EasyMock.anyObject(Money.class), EasyMock.anyString()))
+                .andThrow(new InsufficientBalanceException("")).times(1);
+        replay(mockMakeTransferUseCase);
+
+        final String payload = new Gson().toJson(dto);
+        given()
+                .contentType(ContentType.JSON)
+                .body(payload)
+                .post("/api/transfers")
+                .then()
+                .statusCode(422);
+
+    }
+
+
+    @Test
+    public void cannotMakeTransferIfUnknownCurrencyCode() {
+        MakeTransferDto dto = new MakeTransferDto("id1","id2",
+                BigDecimal.valueOf(12.99),"XXX","notes");
+
+        Account foo = Account.createNewAccount("foo", Money.of(BigDecimal.TEN, Currency.of("EUR")));
+        Account bar = Account.createNewAccount("bar", Money.of(BigDecimal.TEN, Currency.of("EUR")));
+        Transfer mockTransfer = Transfer.makeTransfer(foo, bar, Money.of(BigDecimal.ONE, Currency.of("EUR")), "notes", BigDecimal.ONE);
+        expect(mockMakeTransferUseCase.compose(EasyMock.anyString(), EasyMock.anyString(), EasyMock.anyObject(Money.class), EasyMock.anyString()))
+                .andThrow(new InsufficientBalanceException("")).times(1);
+        replay(mockMakeTransferUseCase);
+
+        final String payload = new Gson().toJson(dto);
+        given()
+                .contentType(ContentType.JSON)
+                .body(payload)
+                .post("/api/transfers")
+                .then()
+                .statusCode(400);
+
+    }
+
+
+    @Test
+    public void cannotMakeTransferIfNotSameCurrencyCodeOfOriginAccount() {
+        MakeTransferDto dto = new MakeTransferDto("id1","id2",
+                BigDecimal.valueOf(12.99),"USD","notes");
+
+        Account foo = Account.createNewAccount("foo", Money.of(BigDecimal.TEN, Currency.of("EUR")));
+        Account bar = Account.createNewAccount("bar", Money.of(BigDecimal.TEN, Currency.of("EUR")));
+        Transfer mockTransfer = Transfer.makeTransfer(foo, bar, Money.of(BigDecimal.ONE, Currency.of("EUR")), "notes", BigDecimal.ONE);
+        expect(mockMakeTransferUseCase.compose(EasyMock.anyString(), EasyMock.anyString(), EasyMock.anyObject(Money.class), EasyMock.anyString()))
+                .andThrow(new IllegalTransferCurrencyException("")).times(1);
+        replay(mockMakeTransferUseCase);
+
+        final String payload = new Gson().toJson(dto);
+        given()
+                .contentType(ContentType.JSON)
+                .body(payload)
+                .post("/api/transfers")
+                .then()
+                .statusCode(400);
 
     }
 
