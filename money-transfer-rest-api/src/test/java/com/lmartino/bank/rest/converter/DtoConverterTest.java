@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -31,7 +32,7 @@ public class DtoConverterTest {
         Assert.assertThat(transferDto.getId(), is(transfer.getId().getValue()));
         Assert.assertThat(transferDto.getFromAccountId(), is(transfer.getFromAccount().getId().getValue()));
         Assert.assertThat(transferDto.getToAccountId(), is(transfer.getToAccount().getId().getValue()));
-        Assert.assertThat(transferDto.getCreatedAt(), is(transfer.getCreatedAt().toString()));
+        Assert.assertThat(transferDto.getCreatedAt(), is(transfer.getCreatedAt().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)));
 
     }
 
@@ -45,7 +46,7 @@ public class DtoConverterTest {
         Assert.assertThat(accountDto.getName(), is(foo.getName()));
         Assert.assertThat(accountDto.getBalance(), is(foo.getBalance().getValue()));
         Assert.assertThat(accountDto.getCurrency(), is(foo.getBalance().getCurrency().getValue()));
-        Assert.assertThat(accountDto.getCreatedAt(), is(foo.getCreatedAt().toString()));
+        Assert.assertThat(accountDto.getCreatedAt(), is(foo.getCreatedAt().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)));
 
     }
 
@@ -62,7 +63,7 @@ public class DtoConverterTest {
         Assert.assertThat(accountTransferDto.getType(), is(accountTransfer.getType().name()));
         Assert.assertThat(accountTransferDto.getAmount(), is(accountTransfer.getMoney().getValue()));
         Assert.assertThat(accountTransferDto.getCurrency(), is(accountTransfer.getMoney().getCurrency().getValue()));
-        Assert.assertThat(accountTransferDto.getCreatedAt(), is(accountTransfer.getCreatedAt().toString()));
+        Assert.assertThat(accountTransferDto.getCreatedAt(), is(accountTransfer.getCreatedAt().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)));
 
     }
 }
