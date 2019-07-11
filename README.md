@@ -8,7 +8,7 @@ This application has been splitted in following maven modules:
 
 1. **money-transfer-domain:** Layer responsible of the business domain.
 2. **money-transfer-repository:** Layer responsible of persist the relevant data. See the [repository documentation](money-transfer-repository/README.md).
-3. **money-transfer-rest-api:** Layer responsible of exposing a lightweight Rest API. See the [rest api documentation](money-transfer-rest-api/README.md)
+3. **money-transfer-rest-api:** Layer responsible of exposing a lightweight Rest API. See the [rest api module documentation](money-transfer-rest-api/README.md)
 4. **money-transfer-app:** Main partition and entrypoint to boot the application.
 
 I was inspired by the Hexagonal architecture in order to build software components high cohesive and loosely coupled. 
