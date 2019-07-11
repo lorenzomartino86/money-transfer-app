@@ -133,15 +133,15 @@ Following RestFul resources are managed:
             http://localhost:8080/api/transfers`
 
           
-    {
-            "id": "bfaf519f-d208-4dab-919a-0df18da8ef56",
-            "fromAccountId": "b1b0f31a-a9e4-4f84-9b3d-d6ffa069ad2d",
-            "toAccountId": "3b4aa8de-30c4-4156-8129-4f20b2acb5e0",
-            "description": "Test bank transfer",
-            "amount": 50,
-            "currency": "GBP",
-            "createdAt": "2019-07-11T10:35:11"
-    }
+        {
+                "id": "bfaf519f-d208-4dab-919a-0df18da8ef56",
+                "fromAccountId": "b1b0f31a-a9e4-4f84-9b3d-d6ffa069ad2d",
+                "toAccountId": "3b4aa8de-30c4-4156-8129-4f20b2acb5e0",
+                "description": "Test bank transfer",
+                "amount": 50,
+                "currency": "GBP",
+                "createdAt": "2019-07-11T10:35:11"
+        }
 
  
 - The following API will return all transfers for a specific account
