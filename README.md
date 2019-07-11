@@ -19,6 +19,8 @@ See the [domain documentation](money-transfer-domain/README.md) for more details
 
 ### Technical Background
 
+
+
 ### Build Instructions
 ```sh
 mvn clean install

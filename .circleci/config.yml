@@ -18,5 +18,13 @@ jobs:
           name: Coverage Metrics
           command: bash <(curl -s https://codecov.io/bash)
 
+      - run:
+          name: Sonar Analysis
+          command: mvn sonar:sonar \
+            -Dsonar.projectKey=lorenzomartino86_money-transfer-app \
+            -Dsonar.organization=lorenzomartino86 \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.login=59c9c092c9062baf91d4e31672fdd420d35ad767
+
 
 command: docker stop $(docker ps -a -q)
