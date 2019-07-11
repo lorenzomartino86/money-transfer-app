@@ -1,6 +1,9 @@
 package com.lmartino.bank.rest;
 
 import com.google.gson.Gson;
+import com.lmartino.bank.domain.exception.AccountNameConflictException;
+import com.lmartino.bank.domain.exception.UnknownAccountException;
+import com.lmartino.bank.domain.exception.UnknownCurrencyCodeException;
 import com.lmartino.bank.domain.model.Account;
 import com.lmartino.bank.domain.model.Currency;
 import com.lmartino.bank.domain.model.Money;
@@ -77,19 +80,49 @@ public class AccountRestApiTest {
 
 
     @Test
+    public void cannotCreateAccountWithConflictingNames() {
+        CreateAccountDto createAccountDto = new CreateAccountDto("Foo", BigDecimal.valueOf(10.0), "EUR");
+        expect(mockCreateAccountUseCase.compose(EasyMock.anyString(), EasyMock.anyObject(BigDecimal.class), EasyMock.anyString()))
+                .andThrow(new AccountNameConflictException("")).times(1);
+        replay(mockCreateAccountUseCase);
+
+        final String payload = new Gson().toJson(createAccountDto);
+        given()
+                .contentType(ContentType.JSON)
+                .body(payload)
+                .post("/api/accounts")
+                .then()
+                .statusCode(409);
+    }
+
+
+    @Test
+    public void cannotCreateAccountWithUnknownCurrencyCode() {
+        CreateAccountDto createAccountDto = new CreateAccountDto("Foo", BigDecimal.valueOf(10.0), "EUR");
+        expect(mockCreateAccountUseCase.compose(EasyMock.anyString(), EasyMock.anyObject(BigDecimal.class), EasyMock.anyString()))
+                .andThrow(new UnknownCurrencyCodeException("")).times(1);
+        replay(mockCreateAccountUseCase);
+
+        final String payload = new Gson().toJson(createAccountDto);
+        given()
+                .contentType(ContentType.JSON)
+                .body(payload)
+                .post("/api/accounts")
+                .then()
+                .statusCode(400);
+    }
+
+    @Test
     public void canGetAccount() {
         CreateAccountDto createAccountDto = new CreateAccountDto("Foo", BigDecimal.valueOf(10.0), "EUR");
-
         Account mockAccount = Account.createNewAccount(createAccountDto.getName(),
                 Money.of(createAccountDto.getBalance(), Currency.of(createAccountDto.getCurrency())));
         expect(mockGetAccountUseCase.compose(EasyMock.anyString()))
                 .andReturn(mockAccount).times(1);
         replay(mockGetAccountUseCase);
 
-        final String payload = new Gson().toJson(createAccountDto);
         AccountDto accountDto = given()
                 .contentType(ContentType.JSON)
-                .body(payload)
                 .get("/api/accounts/123")
                 .then()
                 .statusCode(200)
@@ -104,6 +137,21 @@ public class AccountRestApiTest {
 
     }
 
+
+
+    @Test
+    public void cannotGetMissingAccount() {
+        expect(mockGetAccountUseCase.compose(EasyMock.anyString()))
+                .andThrow(new UnknownAccountException("")).times(1);
+        replay(mockGetAccountUseCase);
+
+        given()
+                .contentType(ContentType.JSON)
+                .get("/api/accounts/123")
+                .then()
+                .statusCode(404);
+
+    }
 
     @Test
     public void canGetAllAccounts() {

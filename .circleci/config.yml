@@ -20,11 +20,7 @@ jobs:
 
       - run:
           name: Sonar Analysis
-          command: mvn sonar:sonar \
-            -Dsonar.projectKey=lorenzomartino86_money-transfer-app \
-            -Dsonar.organization=lorenzomartino86 \
-            -Dsonar.host.url=https://sonarcloud.io \
-            -Dsonar.login=315cac80b1cb205b9982c7ba89afd346dad6cb56
+          command: mvn sonar:sonar -Dsonar.projectKey=lorenzomartino86_money-transfer-app -Dsonar.organization=lorenzomartino86 -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=315cac80b1cb205b9982c7ba89afd346dad6cb56
 
 
 command: docker stop $(docker ps -a -q)
