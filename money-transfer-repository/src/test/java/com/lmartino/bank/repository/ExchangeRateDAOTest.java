@@ -5,6 +5,7 @@ import com.j256.ormlite.table.TableUtils;
 import com.lmartino.bank.domain.model.Currency;
 import com.lmartino.bank.domain.model.ExchangeRate;
 import com.lmartino.bank.repository.entity.ExchangeRateTable;
+import com.lmartino.bank.repository.exception.RepositoryException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -49,5 +50,19 @@ public class ExchangeRateDAOTest {
 
         Assert.assertThat(exchangeRateDAO.getRate("GBP", "EUR").isEmpty(), is(false));
         Assert.assertThat(exchangeRateDAO.getRate("EUR", "GBP").get().getRate(), is(eurgbp.getRate()));
+    }
+
+
+    @Test(expected = RepositoryException.class)
+    public void cannotGetExchangeRateIfSomethingBadHappen() throws SQLException {
+        TableUtils.dropTable(connectionSource, ExchangeRateTable.class, false);
+        exchangeRateDAO.getRate("EUR", "USD");
+    }
+
+    @Test(expected = RepositoryException.class)
+    public void cannotSaveExchangeRateIfSomethingBadHappen() throws SQLException {
+        TableUtils.dropTable(connectionSource, ExchangeRateTable.class, false);
+        ExchangeRate rate = ExchangeRate.of("123", Currency.of("EUR"), Currency.of("USD"), BigDecimal.ONE);
+        exchangeRateDAO.saveRates(rate);
     }
 }

@@ -4,13 +4,12 @@ import com.google.gson.Gson;
 import com.lmartino.bank.domain.exception.AccountNameConflictException;
 import com.lmartino.bank.domain.exception.UnknownAccountException;
 import com.lmartino.bank.domain.exception.UnknownCurrencyCodeException;
-import com.lmartino.bank.domain.model.Account;
-import com.lmartino.bank.domain.model.Currency;
-import com.lmartino.bank.domain.model.Money;
+import com.lmartino.bank.domain.model.*;
 import com.lmartino.bank.domain.usecase.CreateAccountUseCase;
 import com.lmartino.bank.domain.usecase.GetAccountTransfersUseCase;
 import com.lmartino.bank.domain.usecase.GetAccountUseCase;
 import com.lmartino.bank.rest.dto.AccountDto;
+import com.lmartino.bank.rest.dto.AccountTransferDto;
 import com.lmartino.bank.rest.dto.CreateAccountDto;
 import io.restassured.http.ContentType;
 import org.easymock.EasyMock;
@@ -21,9 +20,11 @@ import org.junit.Test;
 import spark.Spark;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 
 import static io.restassured.RestAssured.given;
+import static org.codehaus.groovy.runtime.InvokerHelper.asList;
 import static org.easymock.EasyMock.*;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -138,6 +139,30 @@ public class AccountRestApiTest {
     }
 
 
+    @Test
+    public void canGetAccountTransfers() {
+        AccountTransfer mockAccountTransfer = AccountTransfer.of(Id.of("123"), TransferType.DEPOSIT,
+                Money.of(BigDecimal.ONE, Currency.of("EUR")), "description", LocalDateTime.now());
+        expect(mockGetAccountTransfersUseCase.compose(EasyMock.anyString()))
+                .andReturn(asList(mockAccountTransfer)).times(1);
+        replay(mockGetAccountTransfersUseCase);
+
+        AccountTransferDto[] accountTransferDtos = given()
+                .contentType(ContentType.JSON)
+                .get("/api/accounts/123/transfers")
+                .then()
+                .statusCode(200)
+                .extract()
+                .as(AccountTransferDto[].class);
+
+        Assert.assertThat(accountTransferDtos, is(notNullValue()));
+        Assert.assertThat(accountTransferDtos.length, is(1));
+        Assert.assertThat(accountTransferDtos[0].getId(), is(mockAccountTransfer.getId().getValue()));
+        Assert.assertThat(accountTransferDtos[0].getAmount(), is(mockAccountTransfer.getMoney().getValue()));
+        Assert.assertThat(accountTransferDtos[0].getType(), is(mockAccountTransfer.getType().name()));
+        Assert.assertThat(accountTransferDtos[0].getCurrency(), is(mockAccountTransfer.getMoney().getCurrency().getValue()));
+
+    }
 
     @Test
     public void cannotGetMissingAccount() {
