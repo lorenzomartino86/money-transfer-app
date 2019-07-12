@@ -1,7 +1,7 @@
 [![CircleCI](https://circleci.com/gh/lorenzomartino86/money-transfer-app.svg?style=svg)](https://circleci.com/gh/lorenzomartino86/money-transfer-app)
 [![codecov](https://codecov.io/gh/lorenzomartino86/money-transfer-app/branch/master/graph/badge.svg)](https://codecov.io/gh/lorenzomartino86/money-transfer-app)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=lorenzomartino86_money-transfer-app&metric=alert_status)](https://sonarcloud.io/dashboard?id=lorenzomartino86_money-transfer-app)
-[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/e0da0bfc8c6ae54501ee)
+[![Postman Collections](https://run.pstmn.io/button.svg)](https://documenter.getpostman.com/view/598096/SVSGQWoG)
 
 # Money Transfer App
 A Java RESTful API to handle money transfers between different accounts.
