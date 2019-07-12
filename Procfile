@@ -1,1 +1,1 @@
-web: java $JAVA_OPTS -jar money-transfer-app/target/money-transfer-app-1.0.0-SNAPSHOT.jar
+worker: java $JAVA_OPTS -jar money-transfer-app/target/money-transfer-app-1.0.0-SNAPSHOT.jar
