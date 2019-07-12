@@ -1,6 +1,7 @@
 [![CircleCI](https://circleci.com/gh/lorenzomartino86/money-transfer-app.svg?style=svg)](https://circleci.com/gh/lorenzomartino86/money-transfer-app)
 [![codecov](https://codecov.io/gh/lorenzomartino86/money-transfer-app/branch/master/graph/badge.svg)](https://codecov.io/gh/lorenzomartino86/money-transfer-app)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=lorenzomartino86_money-transfer-app&metric=alert_status)](https://sonarcloud.io/dashboard?id=lorenzomartino86_money-transfer-app)
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/e0da0bfc8c6ae54501ee)
 
 # Money Transfer App
 A Java RESTful API to handle money transfers between different accounts.
@@ -48,7 +49,9 @@ java -jar money-transfer-app/target/money-transfer-app-1.0.0-SNAPSHOT.jar
 ```
 
 ### Demo
-Make sure that the app is listening on localhost:8080 before starting. Check the [api documentation](money-transfer-rest-api/README.md) before starting with the demo.
+This app is deployed on Heroku listening at *https://lore-money-transfer-app.herokuapp.com*. You can use Postman collection link above to test the api interaction.
+
+If you want to test it locally make sure that the app is listening on localhost:8080 before starting. Check the [api documentation](money-transfer-rest-api/README.md) before starting with the demo.
 
 **N.B**: This app is actually handling just the currencies: EUR, USD, GBP.
 
