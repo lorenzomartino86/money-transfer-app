@@ -47,7 +47,11 @@ public class MoneyTransferApp{
     public void start() {
         stop();
         // Configure Spark
-        port(8080);
+        int port = 8080;
+        if (System.getenv("PORT") != null){
+            port = Integer.parseInt(System.getenv("PORT"));
+        }
+        port(port);
         int maxThreads = 8;
         int minThreads = 2;
         int timeOutMillis = 30000;
