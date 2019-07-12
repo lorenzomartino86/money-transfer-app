@@ -18,7 +18,7 @@ Following RestFul resources are managed:
     | --- | --- | --- |
     | name | Unique Account name | String |
     | balance | Account available balance | decimal |
-    | currency | Account currency (ISO code) | String |    
+    | currency | Account currency (ISO code) - Allowed codes are EUR, USD, GBP | String |    
     
    The response will be:
     
@@ -99,7 +99,7 @@ Following RestFul resources are managed:
     | --- | --- | --- |
     | id | Transfer unique identifier (UUID) | String |
     | type | Operation type: WITHDRAW or DEPOSIT | String |
-    | money | Transfer money | decimal |
+    | amount | Transfer money | decimal |
     | currency | Transfer currency (ISO code) | String |
     | description | Transfer notes | String |
     | createdAt | Creation date time (YYYY-MM-DD'T'hh:mm:ss) | String |

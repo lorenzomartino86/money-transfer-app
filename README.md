@@ -23,7 +23,7 @@ See the [domain documentation](money-transfer-domain/README.md) for more details
 
 This project is using following technologies:
 
-1. Jdk 1.8
+1. Java 11
 2. SparkJava as microframework for web application
 3. Google Guice to take advantage of a dependency injection framework avoiding the footprint of frameworks like Spring
 4. H2 database
