@@ -40,9 +40,9 @@ public class TransferBetweenTwoAccountsSteps {
         app.stop();
     }
 
-    @Given("^account (.*) with balance (.*)$")
-    public void account_with_balance(String accountName, BigDecimal balance) throws Throwable {
-        CreateAccountDto createAccountDto = new CreateAccountDto(accountName, balance, "EUR");
+    @Given("^account (.*) with balance (.*) and currency (.*)$")
+    public void account_with_balance(String accountName, BigDecimal balance, String currency) throws Throwable {
+        CreateAccountDto createAccountDto = new CreateAccountDto(accountName, balance, currency);
         final String payload = new Gson().toJson(createAccountDto);
         if (fromAccount == null){
             fromAccount = given()

@@ -75,7 +75,9 @@ public class MoneyTransferApp{
             ExchangeRate usdeur = ExchangeRate.create(Currency.of("USD"), Currency.of("EUR"), BigDecimal.valueOf(0.89224));
             ExchangeRate gbpeur = ExchangeRate.create(Currency.of("GBP"), Currency.of("EUR"), BigDecimal.valueOf(1.11210));
             ExchangeRate eurgbp = ExchangeRate.create(Currency.of("EUR"), Currency.of("GBP"), BigDecimal.valueOf(0.89919));
-            exchangeRateRepository.saveRates(eurusd, usdeur, gbpeur, eurgbp);
+            ExchangeRate gbpusd = ExchangeRate.create(Currency.of("GBP"), Currency.of("USD"), BigDecimal.valueOf(1.25));
+            ExchangeRate usdgbp = ExchangeRate.create(Currency.of("USD"), Currency.of("GBP"), BigDecimal.valueOf(0.80));
+            exchangeRateRepository.saveRates(eurusd, usdeur, gbpeur, eurgbp, gbpusd, usdgbp);
         } catch (SQLException e) {
             throw new MoneyTransferAppInitException(e);
         }
