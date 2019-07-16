@@ -2,6 +2,7 @@ package com.lmartino.bank.domain.model;
 
 import com.lmartino.bank.domain.exception.IllegalTransferCurrencyException;
 import com.lmartino.bank.domain.exception.InsufficientBalanceException;
+import com.lmartino.bank.domain.exception.UnprocessableTransferException;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -35,6 +36,17 @@ public class TransferTest {
 
     }
 
+
+    @Test(expected = UnprocessableTransferException.class)
+    public void cannotMakeTransferFromOneAccountToSameAccount(){
+        // Given foo and bar accounts
+        BigDecimal initialFooBalance = BigDecimal.valueOf(2500.00);
+        Account foo = Account.createNewAccount("Foo", Money.of(initialFooBalance, eur));
+
+        // When Make transfer from foo to bar of 35.99 euros
+        BigDecimal transferAmount = BigDecimal.valueOf(35.99);
+        Transfer.makeTransfer(foo, foo, Money.of(transferAmount, eur), "Test Transfer", BigDecimal.ONE);
+    }
 
     @Test
     public void transferFromEurAccountsToGbpAccountsAreAllowed(){

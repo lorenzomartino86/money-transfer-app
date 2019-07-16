@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
-import static com.lmartino.bank.domain.exception.DomainExceptionHandler.illegalTransferCurrencyException;
+import static com.lmartino.bank.domain.exception.DomainExceptionHandler.*;
 
 @Getter
 @ToString
@@ -57,6 +57,9 @@ public class Transfer {
                                         final Money withdrawAmount,
                                         final String description,
                                         final BigDecimal rate){
+        if (fromAccount.equals(toAccount))
+            cannotProcessTransferFromSameAccount(fromAccount.getId().getValue());
+
         if (!fromAccount.hasSameCurrency(withdrawAmount.getCurrency()))
             illegalTransferCurrencyException(withdrawAmount.getCurrency(), fromAccount.getBalance().getCurrency());
 
