@@ -51,6 +51,7 @@ public class MoneyTransferApp{
         if (System.getenv("PORT") != null){
             port = Integer.parseInt(System.getenv("PORT"));
         }
+        System.out.println(String.format("Starting server on port %s", port));
         port(port);
         int maxThreads = 8;
         int minThreads = 2;
