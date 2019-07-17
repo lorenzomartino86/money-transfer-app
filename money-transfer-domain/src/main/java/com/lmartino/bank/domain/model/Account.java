@@ -47,14 +47,14 @@ public class Account {
         return account;
     }
 
-    public void withdraw(Money money) {
+    public synchronized void withdraw(Money money) {
         if (this.balance.isGreaterThan(money))
             this.balance.decreaseBy(money);
         else
             insufficientBalanceException(this.id.getValue());
     }
 
-    public void deposit(Money money) {
+    public synchronized void deposit(Money money) {
         this.balance.increaseBy(money);
     }
 
