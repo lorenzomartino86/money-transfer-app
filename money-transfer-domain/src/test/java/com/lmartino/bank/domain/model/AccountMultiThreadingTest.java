@@ -1,6 +1,5 @@
 package com.lmartino.bank.domain.model;
 
-import com.lmartino.bank.domain.MultithreadTestSupport;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -14,17 +13,16 @@ public class AccountMultiThreadingTest {
     @Test
     public void canDepositAmountInAccountThreadSafely() throws InterruptedException {
         Account account = Account.createNewAccount("MultiThread", Money.of(BigDecimal.ZERO, Currency.of("EUR")));
-        MultithreadTestSupport stressTester = new MultithreadTestSupport(10000);
-
-        stressTester.init(new Runnable() {
-            public void run() {
-                account.deposit(Money.of(BigDecimal.ONE, Currency.of("EUR")));
-            }
-        });
-
-        stressTester.shutdown();
-
-        assertThat(account.getBalance().getValue().intValue(), is(stressTester.totalActionCount()));
+        int numThreads = 10000;
+        Thread[] accountThreads = new Thread[numThreads];
+        for (int i=1; i<=numThreads; i++){
+            String threadName = "Thread " + i;
+            DepositwAccountThread depositwAccountThread = new DepositwAccountThread(account, threadName);
+            accountThreads[i-1] = new Thread(depositwAccountThread);
+            accountThreads[i-1].start();
+        }
+        Thread.sleep(2000);
+        assertThat(account.getBalance().getValue().intValue(), is(numThreads));
     }
 
 
@@ -32,17 +30,51 @@ public class AccountMultiThreadingTest {
     public void canWithdrawAmountFromAccountThreadSafely() throws InterruptedException {
         int startingValue = 100000;
         Account account = Account.createNewAccount("MultiThread", Money.of(BigDecimal.valueOf(startingValue), Currency.of("EUR")));
-        MultithreadTestSupport multithreadEnv = new MultithreadTestSupport(10000);
+        int numThreads = 10000;
+        Thread[] accountThreads = new Thread[numThreads];
+        for (int i=1; i<=numThreads; i++){
+            String threadName = "Thread " + i;
+            WithdrawAccountThread withdrawAccountThread = new WithdrawAccountThread(account, threadName);
+            accountThreads[i-1] = new Thread(withdrawAccountThread);
+            accountThreads[i-1].start();
+        }
+        Thread.sleep(2000);
+        assertThat(account.getBalance().getValue().intValue(), is(startingValue - numThreads));
+    }
 
-        multithreadEnv.init(new Runnable() {
-            public void run() {
-                account.withdraw(Money.of(BigDecimal.ONE, Currency.of("EUR")));
-            }
-        });
 
-        multithreadEnv.shutdown();
+    public static class WithdrawAccountThread implements Runnable {
+        private Account account;
+        private String name;
 
-        assertThat(account.getBalance().getValue().intValue(), is(startingValue - multithreadEnv.totalActionCount()));
+        public WithdrawAccountThread(Account account, String name) {
+            this.account = account;
+            this.name = name;
+        }
+
+        @Override
+        public void run() {
+            // System.out.println("Thread: " + Thread.currentThread().getId());
+            account.withdraw(Money.of(BigDecimal.ONE, Currency.of("EUR")));
+        }
+
+    }
+
+    public static class DepositwAccountThread implements Runnable {
+        private Account account;
+        private String name;
+
+        public DepositwAccountThread(Account account, String name) {
+            this.account = account;
+            this.name = name;
+        }
+
+        @Override
+        public void run() {
+            // System.out.println("Thread: " + Thread.currentThread().getId());
+            account.deposit(Money.of(BigDecimal.ONE, Currency.of("EUR")));
+        }
+
     }
 
 }
