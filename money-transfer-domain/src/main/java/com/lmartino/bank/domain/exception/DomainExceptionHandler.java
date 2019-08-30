@@ -18,6 +18,10 @@ public final class DomainExceptionHandler {
         throw new InsufficientBalanceException(format("Account with id %s has not enough balance to proceed with bank transfer", accountId));
     }
 
+    public static void cannotProcessTransferFromSameAccount(final String accountId){
+        throw new UnprocessableTransferException(String.format("Cannot process transfer from same account %s", accountId));
+    }
+
     public static void unprocessableTransferException(final Transfer transfer){
         throw new UnprocessableTransferException(String.format("Error during transfer transaction with details %s", transfer));
     }
