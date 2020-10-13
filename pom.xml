@@ -41,7 +41,7 @@
         <ormlite-jdbc.version>5.0</ormlite-jdbc.version>
 
         <!-- Test dependencies -->
-        <junit.version>4.12</junit.version>
+        <junit.version>4.13.1</junit.version>
         <easymock.version>3.5.1</easymock.version>
         <cucumber.version>1.2.4</cucumber.version>
         <rest-assured.version>3.2.0</rest-assured.version>
