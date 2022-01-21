@@ -37,7 +37,7 @@
         <lombok.version>1.18.4</lombok.version>
 
         <!-- repository dependencies -->
-        <h2.version>1.4.199</h2.version>
+        <h2.version>2.1.210</h2.version>
         <ormlite-jdbc.version>5.0</ormlite-jdbc.version>
 
         <!-- Test dependencies -->
